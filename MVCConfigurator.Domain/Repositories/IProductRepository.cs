@@ -12,8 +12,8 @@ namespace MVCConfigurator.Domain.Repositories
         Product AddProduct(Product product);
         Product GetProduct(int id);
         IList<Product> GetAllProducts();
-        IList<Product> GetProductByCategory(Category category);
-        bool UpdateProduct(int id);
+        IList<Product> GetProductsByCategory(Category category);
+        bool UpdateProduct(Product product);
         bool DeleteProduct(Product product);
 
         }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVCConfigurator.Domain.Model
+namespace MVCConfigurator.Domain.Models
     {
-    public class Part
+    public class Category:EntityBase
         {
+        public string Name { get; set; }
         }
     }

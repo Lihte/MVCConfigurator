@@ -16,5 +16,7 @@ namespace MVCConfigurator.Domain.Repositories
         bool UpdateProduct(Product product);
         bool DeleteProduct(Product product);
 
+        IEnumerable<Category> GetAllCategories();
+
         }
     }

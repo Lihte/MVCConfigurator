@@ -5,22 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MVCConfigurator.Domain.Models
+{
+    public class Category : EntityBase
     {
-    public class Category:EntityBase
-        {
         public string Name { get; set; }
 
         public override bool Equals(object obj)
-            {
-            if(obj == null)
+        {
+            if (obj == null)
                 return false;
 
             Category c = obj as Category;
 
-            if((System.Object)c == null)
+            if ((System.Object)c == null)
                 return false;
 
             return Id == c.Id && Name == c.Name;
-            }
         }
     }
+}

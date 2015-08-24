@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using MVCConfigurator.Domain.Models;
 
 namespace MVCConfigurator.Domain.Repositories
-    {
+{
     public interface IProductRepository
-        {
+    {
         Product AddProduct(Product product);
         Product GetProduct(int id);
         IList<Product> GetAllProducts();
@@ -17,6 +17,5 @@ namespace MVCConfigurator.Domain.Repositories
         bool DeleteProduct(Product product);
 
         IEnumerable<Category> GetAllCategories();
-
-        }
     }
+}

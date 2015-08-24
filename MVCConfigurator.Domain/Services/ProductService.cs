@@ -32,7 +32,7 @@ namespace MVCConfigurator.Domain.Services
             return _repository.GetAllProducts();
         }
 
-        public IList<Product> GetProductsByCategory(Category category)
+        public IList<Product> GetProductsByCategory(ProductCategory category)
         {
             return _repository.GetProductsByCategory(category);
         }
@@ -47,14 +47,14 @@ namespace MVCConfigurator.Domain.Services
             return _repository.DeleteProduct(product);
         }
 
-        public IList<Part> DisplayPartsByIndex(Product product, int index)
+        public IList<Part> DisplayPartsByCategory(Product product, PartCategory category)
         {
-            return product.Parts[index];
+            return product.Parts.Where(p => p.Category.Id == category.Id).ToList();
         }
-        public IList<Category> GetAllCategories()
+        public IList<ProductCategory> GetAllProductCategories()
         {
 
-            return _repository.GetAllCategories().ToList();
+            return _repository.GetAllProductCategories().ToList();
         }
     }
 }

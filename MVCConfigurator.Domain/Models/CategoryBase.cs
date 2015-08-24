@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVCConfigurator.Domain.Models
 {
-    public class Category : EntityBase
+    public abstract class CategoryBase : EntityBase
     {
         public string Name { get; set; }
 
@@ -15,7 +15,7 @@ namespace MVCConfigurator.Domain.Models
             if (obj == null)
                 return false;
 
-            Category c = obj as Category;
+            CategoryBase c = obj as CategoryBase;
 
             if ((System.Object)c == null)
                 return false;

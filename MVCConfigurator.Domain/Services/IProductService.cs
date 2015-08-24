@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using MVCConfigurator.Domain.Models;
 
 namespace MVCConfigurator.Domain.Services
-    {
+{
     public interface IProductService
-        {
+    {
         Product AddProduct(Product product);
         Product GetProduct(int id);
         IList<Product> GetAllProducts();
@@ -17,5 +17,5 @@ namespace MVCConfigurator.Domain.Services
         bool DeleteProduct(Product product);
         IList<Part> DisplayPartsByIndex(Product product, int index);
         IList<Category> GetAllCategories();
-        }
     }
+}

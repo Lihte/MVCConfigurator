@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MVCConfigurator.Domain.Models
-    {
+{
     public abstract class EntityBase
-        {
+    {
         public int Id { get; set; }
-        }
     }
+}

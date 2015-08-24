@@ -12,10 +12,10 @@ namespace MVCConfigurator.Domain.Repositories
         Product AddProduct(Product product);
         Product GetProduct(int id);
         IList<Product> GetAllProducts();
-        IList<Product> GetProductsByCategory(Category category);
+        IList<Product> GetProductsByCategory(ProductCategory category);
         bool UpdateProduct(Product product);
         bool DeleteProduct(Product product);
 
-        IEnumerable<Category> GetAllCategories();
+        IEnumerable<ProductCategory> GetAllProductCategories();
     }
 }

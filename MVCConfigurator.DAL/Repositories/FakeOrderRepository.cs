@@ -19,19 +19,18 @@ namespace MVCConfigurator.DAL.Repositories
                 Product = new Product
                 {
                     Id = 2, 
-                    Category = new Category
+                    Category = new ProductCategory
                     { 
                         Id = 11, 
                         Name = "Cyklar"
                     }, 
                     Name = "Crescent", 
-                    Parts = new List<List<Part>>
+                    Parts = new List<Part>
                     {
-                        new List<Part>
-                        {
+
                             new Part { Id = 101, Name = "Däck_1", Price = 300, LeadTime = 12, ImagePath = "\\Temp", StockKeepingUnit = "C1D1" },
                             new Part { Id = 202, Name = "Däck_2", Price = 200, LeadTime = 22, ImagePath = "\\Temp", StockKeepingUnit = "C1D2" }
-                        }
+
                     }, 
                     ImagePath = "\\Products", 
                     ProductCode = ""
@@ -46,19 +45,18 @@ namespace MVCConfigurator.DAL.Repositories
                 Product = new Product
                 {
                     Id = 2, 
-                    Category = new Category
+                    Category = new ProductCategory
                     { 
                         Id = 11, 
                         Name = "Cyklar"
                     }, 
                     Name = "Crescent", 
-                    Parts = new List<List<Part>>
+                    Parts = new List<Part>
                     {
-                        new List<Part>
-                        {
+
                             new Part { Id = 101, Name = "Däck_1", Price = 300, LeadTime = 12, ImagePath = "\\Temp", StockKeepingUnit = "C1D1" },
                             new Part { Id = 202, Name = "Däck_2", Price = 200, LeadTime = 22, ImagePath = "\\Temp", StockKeepingUnit = "C1D2" }
-                        }
+
                     },
                     ImagePath = "\\Products", 
                     ProductCode = ""

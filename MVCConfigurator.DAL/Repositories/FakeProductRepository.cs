@@ -11,41 +11,43 @@ namespace MVCConfigurator.DAL.Repositories
 
     public class FakeProductRepository : IProductRepository
         {
-        private static List<Product> _products = new List<Product> ()
-        { 
-            new Product{Id = 1, Category = new Category{ Id =10, Name="Bilar"}, Name ="Volvo V70", 
 
-                Parts = new List<List<Part>>()
+
+        private static List<Product> _products = new List<Product>()
+        { 
+            new Product{Id = 1, Category = new ProductCategory{ Id =10, Name="Bilar"}, Name ="Volvo V70", 
+
+                Parts = new List<Part>()
                 {
-                    new List<Part>(){
                     new Part{ Id = 100, Name="Hjul_1", Price=500, LeadTime=10, ImagePath="\\Temp", StockKeepingUnit="B1H1"},
-                    new Part{ Id = 200, Name="Hjul_2", Price=700, LeadTime=20, ImagePath="\\Temp", StockKeepingUnit="B1H2"}
-                    },
-                    new List<Part>(){
+                    new Part{ Id = 200, Name="Hjul_2", Price=700, LeadTime=20, ImagePath="\\Temp", StockKeepingUnit="B1H2"},
                     new Part{ Id = 101, Name="Fälg_3", Price=500, LeadTime=10, ImagePath="\\Temp", StockKeepingUnit="B1F1"},
                     new Part{ Id = 201, Name="Fälg_4", Price=700, LeadTime=20, ImagePath="\\Temp", StockKeepingUnit="B1F2"}
-                    }
-                }, ImagePath="\\Products", ProductCode=""
-                },
+                }, 
+                ImagePath="\\Products", ProductCode=""
+            },
             
-            new Product{Id = 2, Category = new Category{ Id =11, Name="Cyklar"}, Name ="Crescent", 
+            new Product{Id = 2, Category = new ProductCategory{ Id =11, Name="Cyklar"}, Name ="Crescent", 
 
-                Parts = new List<List<Part>>()
+                Parts = new List<Part>()
                 {
-                    new List<Part>(){
                     new Part{ Id = 101, Name="Däck_1", Price=300, LeadTime=12, ImagePath="\\Temp", StockKeepingUnit="C1D1"},
                     new Part{ Id = 202, Name="Däck_2", Price=200, LeadTime=22, ImagePath="\\Temp", StockKeepingUnit="C1D2"}
-                    }
+
                 }, ImagePath="\\Products", ProductCode=""
                 }       
         };
 
-        private static List<Category> _categories = new List<Category>
+        private static List<ProductCategory> _productCategories = new List<ProductCategory>
         {
-            new Category{ Id =10, Name="Bilar" },
-            new Category { Id =11, Name="Cyklar" }
+            new ProductCategory{ Id =10, Name="Bilar" },
+            new ProductCategory { Id =11, Name="Cyklar" }
         };
-
+        private static List<PartCategory> _partCategories = new List<PartCategory>
+        {
+            new PartCategory{ Id=1, Name="Hjul"},
+            new PartCategory { Id=2, Name="Fälgar"}
+        };
         public Product AddProduct(Product product)
             {
             _products.Add(product);
@@ -53,11 +55,11 @@ namespace MVCConfigurator.DAL.Repositories
             return product;
             }
 
-        private void AddCategory(Category category)
+        private void AddCategory(ProductCategory category)
             {
             var exists =false;
 
-            foreach(var item in _categories)
+            foreach(var item in _productCategories)
                 {
                 if(item.Id == category.Id || item.Name == category.Name)
                     {
@@ -66,7 +68,7 @@ namespace MVCConfigurator.DAL.Repositories
                 }
 
             if(!exists)
-                _categories.Add(category);
+                _productCategories.Add(category);
             }
 
 
@@ -79,7 +81,7 @@ namespace MVCConfigurator.DAL.Repositories
             return _products;
             }
 
-        public IList<Product> GetProductsByCategory(Category category)
+        public IList<Product> GetProductsByCategory(ProductCategory category)
             {
             var list = _products.Where(p => p.Category.Equals(category)).ToList();
             return list;
@@ -110,9 +112,9 @@ namespace MVCConfigurator.DAL.Repositories
 
             }
 
-        public IEnumerable<Category> GetAllCategories()
+        public IEnumerable<ProductCategory> GetAllProductCategories()
             {
-            return _categories;
+            return _productCategories;
             }
         }
     }

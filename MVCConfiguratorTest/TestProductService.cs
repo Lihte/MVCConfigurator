@@ -16,7 +16,7 @@ namespace MVCConfiguratorTest
         [TestMethod]
         public void AssertThat_AddProduct_Returns_Same_Product()
         {
-            var prod = new Product { Id = 5, Category = new Category { Id = 16, Name = "Bullar" }, Name = "Fiskbulle", ImagePath = "", ProductCode = "", Parts = new List<List<Part>>() };
+            var prod = new Product { Id = 5, Category = new ProductCategory { Id = 16, Name = "Bullar" }, Name = "Fiskbulle", ImagePath = "", ProductCode = "", Parts = new List<Part>() };
             Assert.AreSame(prod, _service.AddProduct(prod));
         }
 
@@ -35,7 +35,7 @@ namespace MVCConfiguratorTest
         [TestMethod]
         public void AssertThatGetProductByCategoryReturnsCorrectProductList()
         {
-            var category = new Category();
+            var category = new ProductCategory();
             category.Id = 10;
             category.Name = "Bilar";
             var list = _service.GetProductsByCategory(category);
@@ -55,7 +55,7 @@ namespace MVCConfiguratorTest
         [TestMethod]
         public void AssertThatGetProductByCategoryReturnsNotNullProductList()
         {
-            var category = new Category();
+            var category = new ProductCategory();
             category.Id = 10;
             category.Name = "Bilar";
             var list = _service.GetProductsByCategory(category);
@@ -84,24 +84,24 @@ namespace MVCConfiguratorTest
             Assert.IsNull(_service.GetProduct(1));
         }
 
-        [TestMethod]
-        public void AssertThatDisplayPartsByIndexReturnsCorrectParts()
-        {
-            var prod = _service.GetProduct(2);
-            var parts = _service.DisplayPartsByIndex(prod, 0);
-            Assert.IsTrue(parts.Count == 2);
-        }
+        //[TestMethod]
+        //public void AssertThatDisplayPartsByIndexReturnsCorrectParts()
+        //{
+        //    var prod = _service.GetProduct(2);
+        //    var parts = _service.DisplayPartsByIndex(prod, 0);
+        //    Assert.IsTrue(parts.Count == 2);
+        //}
 
         [TestMethod]
         public void AssertThatGetAllCategoriesIsNotNull()
         {
-            Assert.IsNotNull(_service.GetAllCategories());
+            Assert.IsNotNull(_service.GetAllProductCategories());
         }
 
         [TestMethod]
         public void AssertThatGetAllCategoriesIsNotEmpty()
         {
-            Assert.IsTrue(_service.GetAllCategories().Count > 0);
+            Assert.IsTrue(_service.GetAllProductCategories().Count > 0);
         }
     }
 }

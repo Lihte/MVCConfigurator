@@ -12,7 +12,6 @@ namespace MVCConfigurator.DAL.Repositories
     public class FakeProductRepository : IProductRepository
         {
 
-
         private static List<Product> _products = new List<Product>()
         { 
             new Product{Id = 1, Category = new ProductCategory{ Id =10, Name="Bilar"}, Name ="Volvo V70", 
@@ -31,8 +30,8 @@ namespace MVCConfigurator.DAL.Repositories
 
                 Parts = new List<Part>()
                 {
-                    new Part{ Id = 101, Name="Däck_1", Price=300, LeadTime=12, ImagePath="\\Temp", StockKeepingUnit="C1D1"},
-                    new Part{ Id = 202, Name="Däck_2", Price=200, LeadTime=22, ImagePath="\\Temp", StockKeepingUnit="C1D2"}
+                    new Part{ Id = 101, Category = new PartCategory{ Id=1, Name="Hjul"},  Name="Däck_1", Price=300, LeadTime=12, ImagePath="\\Temp", StockKeepingUnit="C1D1"},
+                    new Part{ Id = 202, Category = new PartCategory { Id=2, Name="Fälgar"}, Name="Däck_2", Price=200, LeadTime=22, ImagePath="\\Temp", StockKeepingUnit="C1D2"}
 
                 }, ImagePath="\\Products", ProductCode=""
                 }       
@@ -83,7 +82,7 @@ namespace MVCConfigurator.DAL.Repositories
 
         public IList<Product> GetProductsByCategory(ProductCategory category)
             {
-            var list = _products.Where(p => p.Category.Equals(category)).ToList();
+            var list = _products.Where(p => p.Category.Id == category.Id).ToList();
             return list;
 
             }

@@ -56,5 +56,10 @@ namespace MVCConfigurator.Domain.Services
 
             return _repository.GetAllProductCategories().ToList();
         }
+
+        public IList<PartCategory> GetAllPartCategoriesByProduct(Product product)
+        {
+            return product.Parts.Select(p => p.Category).ToList();
+        }
     }
 }

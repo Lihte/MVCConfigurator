@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestOrderService.cs" />
     <Compile Include="TestProductService.cs" />
+    <Compile Include="TestUserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCConfigurator.DAL\MVCConfigurator.DAL.csproj">
@@ -67,6 +68,9 @@
       <Project>{cf911577-5431-4a77-ab18-2e82695a288f}</Project>
       <Name>MVCConfigurator.UI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

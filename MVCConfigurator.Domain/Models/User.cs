@@ -7,22 +7,13 @@ using System.Threading.Tasks;
 
 namespace MVCConfigurator.Domain.Models
     {
-    public class User:IPrincipal
+    public class User
         {
         public int Id { get; set; }
-        public byte[] Password { get; set; }
-        public Role Role { get; set; }
+        public byte[] Salt { get; set; }
+        public byte[] Hash { get; set; }
+        public bool IsAdmin { get; set; }
         public string UserName { get; set; }
 
-
-        public IIdentity Identity
-            {
-            get { return new GenericIdentity(UserName); }
-            }
-
-        public bool IsInRole(string role)
-            {
-            throw new NotImplementedException();
-            }
         }
     }

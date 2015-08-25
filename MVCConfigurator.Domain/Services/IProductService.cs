@@ -17,6 +17,7 @@ namespace MVCConfigurator.Domain.Services
         bool DeleteProduct(Product product);
         IList<Part> DisplayPartsByCategory(Product product, PartCategory category);
         IList<ProductCategory> GetAllProductCategories();
+        IList<PartCategory> GetAllPartCategoriesByProduct(Product product);
 
     }
 }

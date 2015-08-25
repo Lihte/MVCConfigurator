@@ -103,5 +103,11 @@ namespace MVCConfiguratorTest
         {
             Assert.IsTrue(_service.GetAllProductCategories().Count > 0);
         }
+        [TestMethod]
+        public void AssertThatGetAllPartCategoriesByProductReturnsAListOfCategories()
+        {
+            var product = _service.GetProduct(2);
+            Assert.IsTrue(_service.GetAllPartCategoriesByProduct(product).Count>0);
+        }
     }
 }

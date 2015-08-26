@@ -14,16 +14,21 @@ namespace MVCConfigurator.Domain.Services
     {
         private IPasswordHandler _passwordHandler;
         private IUserRepository _userRepository;
-
-        public CustomAuthenticationService(IUserRepository userRepository, IPasswordHandler passwordHandler)
+        private IAuth _adapter;
+        public CustomAuthenticationService(IUserRepository userRepository, IPasswordHandler passwordHandler,IAuth adapter)
         {
             _userRepository = userRepository;
             _passwordHandler = passwordHandler;
+            _adapter = adapter;
         }
         public bool Login(string username, string password)
         {
             User user = _userRepository.GetByUsername(username);
             var IsCorrect = _passwordHandler.Validate(password, user.Salt, user.Hash);
+
+            if(IsCorrect)
+                _adapter.DoAuth(username);
+
             return IsCorrect;
         }
 
@@ -37,9 +42,16 @@ namespace MVCConfigurator.Domain.Services
             return _userRepository.CreateUser(username, salt, hash);
         }
 
-        public Models.User AuthenticateRequest(System.Web.HttpContextBase httpContext)
+        public User AuthenticateRequest(System.Web.HttpContextBase httpContext)
         {
-            throw new NotImplementedException();
+            if(httpContext.Request.Cookies["userName"]==null)
+                return null;
+            var userName = httpContext.Request.Cookies["userName"].Value;
+            var user = _userRepository.GetByUsername(userName);
+            httpContext.User = user;
+
+            return user;
+
         }
     }
 }

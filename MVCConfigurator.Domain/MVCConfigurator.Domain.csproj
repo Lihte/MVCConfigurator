@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\IPasswordHandler.cs" />
-    <Compile Include="Handlers\PasswordHandler.cs" />
     <Compile Include="Models\CategoryBase.cs" />
     <Compile Include="Models\EntityBase.cs" />
     <Compile Include="Models\Order.cs" />

@@ -10,7 +10,7 @@ using MVCConfigurator.Domain.Models;
 
 namespace MVCConfigurator.Domain.Services
 {
-    public class CustomAuthenticationService:ICustomAuthenticationService
+    public class CustomAuthenticationService : ICustomAuthenticationService
     {
         private IPasswordHandler _passwordHandler;
         private IUserRepository _userRepository;

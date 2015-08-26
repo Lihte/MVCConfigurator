@@ -10,23 +10,22 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class FakeUserRepository : IUserRepository
     {
-        private static List<User> users = 
-            new List<User>
-            {
-
-            };
+        private static List<User> users = new List<User>() { };
         public User GetByUsername(string username)
         {
-            return users.FirstOrDefault(u=>u.UserName ==username);
+            return users.FirstOrDefault(u => u.UserName == username);
         }
         public User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash)
         {
-            User user = new User();
-            user.Hash = passwordHash;
-            user.Salt=passwordSalt;
-            user.UserName = username;
-            user.Id = users.Count()+1;
-            user.IsAdmin = true;
+            var user = new User()
+            {
+                Hash = passwordHash,
+                Salt = passwordSalt,
+                UserName = username,
+                Id = users.Count()+1,
+                IsAdmin = true,
+            };
+
             users.Add(user);
             return user;
         }

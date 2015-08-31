@@ -6,6 +6,7 @@ using MVCConfigurator.Domain.Repositories;
 using MVCConfigurator.DAL.Repositories;
 using MVCConfigurator.DAL.Handlers;
 using MVCConfigurator.Domain.Handlers;
+using MVCConfigurator.UI.Services;
 
 namespace MVCConfigurator.UI
 {
@@ -19,9 +20,10 @@ namespace MVCConfigurator.UI
             container.RegisterType<IProductService, ProductService>();
             container.RegisterType<IUserRepository, FakeUserRepository>();
             container.RegisterType<IOrderRepository, FakeOrderRepository>();
-            container.RegisterType<ICustomAuthenticationService, CustomAuthenticationService>();
+            container.RegisterType<IUserService, UserService>();
             container.RegisterType<IPasswordHandler, PasswordHandler>();
             container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<IAuthenticationService, AuthenticationService>();
 
             // register all your components with the container here
             // it is NOT necessary to register your controllers

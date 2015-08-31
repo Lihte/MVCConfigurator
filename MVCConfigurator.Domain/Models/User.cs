@@ -23,7 +23,7 @@ namespace MVCConfigurator.Domain.Models
 
         public bool IsInRole(string role)
         {
-            return false;
+            return true;
         }
     }
 }

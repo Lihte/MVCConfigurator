@@ -53,13 +53,13 @@
     <Compile Include="Repositories\IOrderRepository.cs" />
     <Compile Include="Repositories\IProductRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
-    <Compile Include="Services\CustomAuthenticationService.cs" />
-    <Compile Include="Services\IAuth.cs" />
-    <Compile Include="Services\ICustomAuthenticationService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IOrderService.cs" />
     <Compile Include="Services\IProductService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\Response.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

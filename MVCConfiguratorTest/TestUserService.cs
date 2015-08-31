@@ -3,25 +3,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MVCConfigurator.Domain.Services;
 using MVCConfigurator.DAL.Repositories;
 using MVCConfigurator.DAL.Handlers;
-using MVCConfigurator.UI.Authentication;
 
 namespace MVCConfiguratorTest
 {
     [TestClass]
     public class TestUserService
     {
-        CustomAuthenticationService service = new CustomAuthenticationService(new FakeUserRepository(), new PasswordHandler(),new FormsAuthenticationAdapter());
+        UserService service = new UserService(new FakeUserRepository(), new PasswordHandler());
         [TestMethod]
         public void AssertThatRegisterCustomerReturnsUserWithHashAndSalt()
         {
-            var user = service.RegisterUser("Tomas", "Lihte");
-            Assert.IsNotNull(user.Hash);
+            var response = service.RegisterUser("Tomas", "Lihte","Lihte");
+            Assert.IsNotNull(response.Entity.Hash);
         }
         [TestMethod]
         public void AssertThatRegisteredUserCanLogin()
         {
-            var user = service.RegisterUser("Fredrik", "Fittbög");
-            Assert.IsTrue(service.Login("Fredrik", "Fittbög"));
+            var user = service.RegisterUser("Fredrik", "Fittbög","Fittbög");
+            Assert.IsTrue(service.Login("Fredrik", "Fittbög").Success);
         }
     }
 }

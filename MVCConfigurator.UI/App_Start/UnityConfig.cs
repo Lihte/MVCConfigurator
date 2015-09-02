@@ -24,6 +24,7 @@ namespace MVCConfigurator.UI
             container.RegisterType<IPasswordHandler, PasswordHandler>();
             container.RegisterType<IOrderService, OrderService>();
             container.RegisterType<IAuthenticationService, AuthenticationService>();
+            container.RegisterType<IMessageService, MessageService>();
 
             // register all your components with the container here
             // it is NOT necessary to register your controllers

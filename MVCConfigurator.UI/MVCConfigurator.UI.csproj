@@ -134,6 +134,9 @@
     <Content Include="Views\Home\CreateUser.cshtml" />
     <Content Include="Views\Home\User.cshtml" />
     <Content Include="Views\Home\UserCreated.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
+    <Content Include="Views\Home\ResetPassword.cshtml" />
+    <Content Include="Views\Home\CreateNewPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

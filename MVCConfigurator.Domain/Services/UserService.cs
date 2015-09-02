@@ -78,19 +78,13 @@ namespace MVCConfigurator.Domain.Services
         }
         public Response<User> Get(string userName)
         {
-            return new Response<User> { Entity=_userRepository.GetByUsername(userName) };
+            return new Response<User> { Entity = _userRepository.GetByUsername(userName) };
         }
 
-        //public User AuthenticateRequest(System.Web.HttpContextBase httpContext)
-        //{
-        //    if(httpContext.Request.Cookies["userName"]==null)
-        //        return null;
-        //    var userName = httpContext.Request.Cookies["userName"].Value;
-        //    var user = _userRepository.GetByUsername(userName);
-        //    httpContext.User = user;
 
-        //    return user;
-
-        //}
+        public Response<User> UpdateUser(User user)
+        {
+           return new Response<User> { Entity = _userRepository.UpdateUser(user) };
+        }
     }
 }

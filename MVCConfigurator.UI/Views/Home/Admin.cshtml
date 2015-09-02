@@ -1,0 +1,13 @@
+﻿@model MVCConfigurator.UI.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Admin";
+}
+
+<h2>Admin</h2>
+
+@using (@Html.BeginForm())
+{
+    @Html.EditorFor(m => m.Username)
+    <input type="submit" value="Send" class="btn btn-default" />
+}

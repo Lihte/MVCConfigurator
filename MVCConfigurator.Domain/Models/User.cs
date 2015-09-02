@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVCConfigurator.Domain.Models
 {
@@ -14,7 +15,7 @@ namespace MVCConfigurator.Domain.Models
         public byte[] Hash { get; set; }
         public bool IsAdmin { get; set; }
         public string UserName { get; set; }
-
+        public Guid RequestPasswordToken { get; set; }
 
         public IIdentity Identity
         {

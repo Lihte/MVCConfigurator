@@ -14,6 +14,7 @@ namespace MVCConfigurator.Domain.Services
         Response<User> RegisterUser(string username, string password, string confirmPassword);
         //User AuthenticateRequest(HttpContextBase httpContext);
         Response<User> Get(string userName);
+        Response<User> UpdateUser(User user);
 
         }
     }

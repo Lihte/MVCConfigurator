@@ -33,15 +33,27 @@ namespace MVCConfigurator.UI.Controllers
             if(login.Success)
             {
                 _authenticationService.LoginUser(login.Entity, HttpContext, false);
+
+                if(login.Entity.IsAdmin)
+                {
+                    return RedirectToAction("Admin");
+                }
+
                 return RedirectToAction("User");
             }
 
             ModelState.AddModelError("username",login.Error.ToString());
             return View();
         }
-        
-        [Authorize(Users="Fredrik")]
+
+        [Authorize]
         public ActionResult User()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Admin()
         {
             return View();
         }
@@ -66,21 +78,37 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
-        public ActionResult UserCreated()
+        public ActionResult ResetPassword()
         {
-            return View("Index");
+            return View();
         }
+
+        [HttpPost]
+        public ActionResult ResetPassword(UserViewModel user)
+        {
+            _authenticationService.ResetPassword(user.Username);
+
+            return RedirectToAction("Index");
+        }
+
+        
+        public ActionResult CreateNewPassword(string token)
+        {
+            return View();
+        }
+
         public ActionResult LogOut()
         {
             _authenticationService.LogOut();
 
             return RedirectToAction("Index");
         }
+
         protected override void OnAuthentication(System.Web.Mvc.Filters.AuthenticationContext filterContext)
         {
             if(filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
             {
-                _authenticationService.AuthenticateRequest(filterContext.HttpContext, _userService);
+                _authenticationService.AuthenticateRequest(filterContext.HttpContext);
             }
         }
     }

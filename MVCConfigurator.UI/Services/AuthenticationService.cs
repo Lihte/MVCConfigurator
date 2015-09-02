@@ -8,9 +8,17 @@ using MVCConfigurator.Domain.Services;
 
 namespace MVCConfigurator.UI.Services
 {
-    public class AuthenticationService:IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
-        public void AuthenticateRequest(HttpContextBase context, IUserService userService)
+        private IUserService _userService;
+        private IMessageService _messageService;
+
+        public AuthenticationService(IUserService userService, IMessageService messageService)
+        {
+            _userService = userService;
+            _messageService = messageService;
+        }
+        public void AuthenticateRequest(HttpContextBase context)
         {
             var cookieName = FormsAuthentication.FormsCookieName;
             var authCookie = context.Request.Cookies[cookieName];
@@ -28,17 +36,17 @@ namespace MVCConfigurator.UI.Services
                 return;
             }
 
-            context.User = GetPricipal(authTicket,userService);
+            context.User = GetPricipal(authTicket);
         }
 
-        private User GetPricipal(FormsAuthenticationTicket authTicket, IUserService userService)
+        private User GetPricipal(FormsAuthenticationTicket authTicket)
         {
             var userName = authTicket.Name;
             var resourceId = 0;
 
             Int32.TryParse(authTicket.UserData, out resourceId);
 
-            return userService.Get(userName).Entity;
+            return _userService.Get(userName).Entity;
         }
 
         public void LoginUser(Domain.Models.User user, HttpContextBase context, bool isPersistent)
@@ -78,6 +86,18 @@ namespace MVCConfigurator.UI.Services
         public void LogOut()
         {
             FormsAuthentication.SignOut();
+        }
+
+        public void ResetPassword(string username)
+        {
+            var user = _userService.Get(username);
+
+            user.Entity.RequestPasswordToken = Guid.NewGuid();
+
+            var resetPasswordLink = "/Home/CreateNewPassword?token="+user.Entity.RequestPasswordToken.ToString();
+            _messageService.SendMail("Reset password request", resetPasswordLink, user.Entity.UserName);
+
+            _userService.UpdateUser(user.Entity);
         }
     }
 }

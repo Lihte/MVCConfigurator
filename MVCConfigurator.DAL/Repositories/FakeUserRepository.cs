@@ -10,7 +10,9 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class FakeUserRepository : IUserRepository
     {
-        private static List<User> users = new List<User>() { };
+        private static List<User> users = new List<User>() {
+            new User{ Id = 1, IsAdmin = true, UserName = "Tomas"}
+        };
         public User GetByUsername(string username)
         {
             return users.FirstOrDefault(u => u.UserName == username);
@@ -28,6 +30,16 @@ namespace MVCConfigurator.DAL.Repositories
 
             users.Add(user);
             return user;
+        }
+
+        public User UpdateUser(User user)
+        {
+            var existingUser = GetByUsername(user.UserName);
+            if(existingUser != null)
+            {
+                existingUser = user;
+            }
+            return existingUser;
         }
     }
 }

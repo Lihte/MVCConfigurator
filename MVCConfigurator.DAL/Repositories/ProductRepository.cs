@@ -8,17 +8,17 @@ using System.Collections.Generic;
 
 namespace MVCConfigurator.DAL.Repositories
 {
-    public class ProductContext : DbContext
-    {
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; }
-    }
+    //public class ProductContext : DbContext
+    //{
+    //    public DbSet<Product> Products { get; set; }
+    //    public DbSet<ProductCategory> ProductCategories { get; set; }
+    //}
     public class ProductRepository : IProductRepository
     {
-        private ProductContext _context;
+        private ConfiguratorContext _context;
         public ProductRepository()
         {
-            _context = new ProductContext();
+            _context = new ConfiguratorContext();
         }
         
         

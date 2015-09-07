@@ -9,18 +9,18 @@ using System.Data.Entity;
 
 namespace MVCConfigurator.DAL.Repositories
 {
-    public class OrderContext : DbContext
-    {
-        public DbSet<Order> Orders { get; set; }
-    }
+    //public class OrderContext : DbContext
+    //{
+    //    public DbSet<Order> Orders { get; set; }
+    //}
 
     public class OrderRepository : IOrderRepository
     {
-        private OrderContext _context;
+        private ConfiguratorContext _context;
 
         public OrderRepository()
         {
-            _context = new OrderContext();
+            _context = new ConfiguratorContext();
         }
 
         public IEnumerable<Order> GetAllOrders()

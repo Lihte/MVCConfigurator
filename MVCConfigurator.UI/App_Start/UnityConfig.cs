@@ -16,10 +16,10 @@ namespace MVCConfigurator.UI
         {
 			var container = new UnityContainer();
 
-            container.RegisterType<IProductRepository, FakeProductRepository>();
+            container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IProductService, ProductService>();
-            container.RegisterType<IUserRepository, FakeUserRepository>();
-            container.RegisterType<IOrderRepository, FakeOrderRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IOrderRepository, OrderRepository>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IPasswordHandler, PasswordHandler>();
             container.RegisterType<IOrderService, OrderService>();

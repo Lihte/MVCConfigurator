@@ -9,9 +9,9 @@ namespace MVCConfigurator.Domain.Repositories
 {
     public interface IOrderRepository
     {
-        IList<Order> GetAllOrders();
+        IEnumerable<Order> GetAllOrders();
         Order GetOrderById(int orderId);
-        IList<Order> GetOrderByProduct(Product product);
+        IEnumerable<Order> GetOrdersByProduct(Product product);
         Order AddOrder(Order order);
         bool UpdateOrder(Order order);
         bool DeleteOrder(Order order);

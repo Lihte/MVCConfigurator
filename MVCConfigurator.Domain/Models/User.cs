@@ -16,7 +16,7 @@ namespace MVCConfigurator.Domain.Models
         public bool IsAdmin { get; set; }
         public string UserName { get; set; }
         public Guid RequestPasswordToken { get; set; }
-
+        public virtual IList<Order> Orders { get; set; }
         public IIdentity Identity
         {
             get { return new GenericIdentity(UserName); }

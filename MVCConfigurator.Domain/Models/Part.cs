@@ -14,6 +14,8 @@ namespace MVCConfigurator.Domain.Models
         public string StockKeepingUnit { get; set; }
         public string ImagePath { get; set; }
         public PartCategory Category{ get; set; }
-        public List<Part> IncompatibleParts { get; set; }
+        public virtual IList<Part> IncompatibleParts { get; set; }
+
+        
     }
 }

@@ -9,17 +9,17 @@ using System.Data.Entity;
 
 namespace MVCConfigurator.DAL.Repositories
 {
-    public class UserContext : DbContext
-    {
-        public DbSet<User> Users { get; set; }
-    }
+    //public class UserContext : DbContext
+    //{
+    //    public DbSet<User> Users { get; set; }
+    //}
     
     public class UserRepository : IUserRepository
     {
-        private UserContext _context;
+        private ConfiguratorContext _context;
         public UserRepository ()
 	    {
-            _context = new UserContext();
+            _context = new ConfiguratorContext();
 	    }
         public User GetByUsername(string username)
         {

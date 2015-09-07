@@ -15,7 +15,5 @@ namespace MVCConfigurator.Domain.Models
         public string ImagePath { get; set; }
         public PartCategory Category{ get; set; }
         public virtual IList<Part> IncompatibleParts { get; set; }
-
-        
     }
 }

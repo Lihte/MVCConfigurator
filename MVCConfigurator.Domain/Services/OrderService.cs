@@ -19,7 +19,7 @@ namespace MVCConfigurator.Domain.Services
 
         public IList<Order> GetAllOrders()
         {
-            return _repository.GetAllOrders();
+            return _repository.GetAllOrders().ToList();
         }
 
         public Order GetOrderById(int orderId)

@@ -68,7 +68,7 @@ namespace MVCConfigurator.DAL.Repositories
         };
         #endregion
 
-        public IList<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders()
         {
             return _orderList;
         }
@@ -78,7 +78,7 @@ namespace MVCConfigurator.DAL.Repositories
             return _orderList.FirstOrDefault(o => o.Id == orderId);
         }
 
-        public IList<Order> GetOrderByProduct(Product product)
+        public IEnumerable<Order> GetOrdersByProduct(Product product)
         {
             throw new NotImplementedException();
         }

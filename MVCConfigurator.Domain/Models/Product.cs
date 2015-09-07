@@ -11,7 +11,7 @@ namespace MVCConfigurator.Domain.Models
         public string Name { get; set; }
         public string ProductCode { get; set; }
         public string ImagePath { get; set; }
-        public List<Part> Parts { get; set; }
+        public virtual IList<Part> Parts { get; set; }
         public ProductCategory Category { get; set; }
     }
 }

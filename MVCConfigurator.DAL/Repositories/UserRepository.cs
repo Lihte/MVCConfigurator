@@ -37,6 +37,7 @@ namespace MVCConfigurator.DAL.Repositories
             };
 
             _context.Users.Add(user);
+            _context.SaveChanges();
 
             return user;
         }
@@ -46,6 +47,7 @@ namespace MVCConfigurator.DAL.Repositories
             if(existingUser != null)
             {
                 existingUser = user;
+                _context.SaveChanges();
             }
             return existingUser;
         }

@@ -1,5 +1,6 @@
 ﻿using MVCConfigurator.Domain.Services;
 using MVCConfigurator.UI.Models;
+using MVCConfigurator.UI.Security;
 using MVCConfigurator.UI.Services;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace MVCConfigurator.UI.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Index(UserViewModel viewModel)
         {
@@ -46,22 +48,83 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
+        #region Admin
+        [CustomAuthAttribute]
+        public ActionResult CreateProduct()
+        {
+            return View("~/Views/Home/Admin/CreateProduct.cshtml");
+        }
+
+        [CustomAuthAttribute]
+        public ActionResult ProductDetails()
+        {
+            return View("~/Views/Home/Admin/ProductDetails.cshtml");
+        }
+
+        [CustomAuthAttribute]
+        public ActionResult CustomerList()
+        {
+            return View("~/Views/Home/Admin/CustomerList.cshtml");
+        }
+        #endregion
+
+        #region Customer
+
+        public ActionResult CustomerDetails()
+        {
+            return View("~/Views/Home/Admin/CustomerDetails.cshtml");
+        }
+
+        #endregion
+
+        public ActionResult ProductList()
+        {
+            var user = HttpContext.User;
+
+            if(user.IsInRole(""))
+            {
+                return View("~/Views/Home/Admin/AdminProductList.cshtml");
+            }
+
+            return View("~/Views/Home/User/ProductList.cshtml");
+        }
+
+        public ActionResult SelectParts()
+        {
+            return View("~/Views/Home/User/SelectProducts.cshtml");
+        }
+
+        public ActionResult ConfirmOrder()
+        {
+            return View("~/Views/Home/User/ConfirmOrder.cshtml");
+        }
+
+        public ActionResult OrderList()
+        {
+            return View("~/Views/Home/User/OrderList.cshtml");
+        }
+
+        public ActionResult Profile()
+        {
+            return View("~/Views/Home/User/Profile.cshtml");
+        }
+
         [Authorize]
         public ActionResult User()
         {
             return View();
         }
 
-        [Authorize]
+        [CustomAuthAttribute]
         public ActionResult Admin()
         {
             return View();
         }
+
         public ActionResult CreateUser()
         {
             return View();
         }
-
 
         [HttpPost]
         public ActionResult CreateUser(UserViewModel viewModel)
@@ -91,7 +154,6 @@ namespace MVCConfigurator.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        
         public ActionResult CreateNewPassword(string token)
         {
             return View();

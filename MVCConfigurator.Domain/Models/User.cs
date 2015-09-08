@@ -10,7 +10,13 @@ namespace MVCConfigurator.Domain.Models
 {
     public class User:IPrincipal
     {
+        public User()
+        {
+            UserDetails = new UserDetails();
+        }
+
         public int Id { get; set; }
+        public UserDetails UserDetails { get; set; }
         public byte[] Salt { get; set; }
         public byte[] Hash { get; set; }
         public bool IsAdmin { get; set; }
@@ -24,7 +30,16 @@ namespace MVCConfigurator.Domain.Models
 
         public bool IsInRole(string role)
         {
-            return true;
+            return IsAdmin;
         }
+    }
+
+    public class UserDetails
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string Company { get; set; }
     }
 }

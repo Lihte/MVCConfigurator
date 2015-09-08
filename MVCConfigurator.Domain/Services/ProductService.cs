@@ -61,5 +61,23 @@ namespace MVCConfigurator.Domain.Services
         {
             return product.Parts.Select(p => p.Category).ToList();
         }
+
+        public IList<Part> IsCompatiable(IList<Part> selectedParts, IList<Part> partsToSelect)
+        {
+            var list = new List<Part>();
+
+            foreach(var part in partsToSelect)
+            {
+                for(int i = 0; i < selectedParts.Count; i++)
+                {
+                    if(part.IncompatibleParts.Contains(selectedParts[i]))
+                    {
+                        list.Add(part);
+                    }
+                }
+            }
+
+            return list;
+        }
     }
 }

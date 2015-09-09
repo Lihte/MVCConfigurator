@@ -1,7 +1,25 @@
-﻿
+﻿@model MVCConfigurator.UI.Models.ProductViewModel
 @{
     ViewBag.Title = "CreateProduct";
 }
 
 <h2>CreateProduct</h2>
+@using(Html.BeginForm())
+{
+    <fieldset>
+        <form>
+            @*<div>
+                @Html.Label("Categories")
+                @Html.DropDownList("Categories", Model.Categories, "")  
+            </div>*@
+
+            <div>
+                @Html.Label("New Category")
+                @Html.EditorFor(m=>m.Product.Name)
+            </div>
+            
+        </form>
+    </fieldset>
+}
+
 

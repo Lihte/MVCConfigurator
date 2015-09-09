@@ -157,6 +157,11 @@ namespace MVCConfigurator.UI.Controllers
         {
             if(CurrentUser.IsAdmin)
             {
+                var viewModel = new ProductListViewModel
+                {
+                    Products = _productService.GetAllProducts()
+                };
+
                 return View("~/Views/Admin/AdminProductList.cshtml");
             }
 

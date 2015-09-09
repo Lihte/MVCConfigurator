@@ -14,15 +14,17 @@ namespace MVCConfigurator.UI.Controllers
 {
     public class HomeController : Controller
     {
+        private IProductService _productService;
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
 
         private static User CurrentUser;
 
-        public HomeController(IUserService userService, IAuthenticationService authenticationService)
+        public HomeController(IUserService userService, IAuthenticationService authenticationService, IProductService productService)
         {
             _authenticationService = authenticationService;
             _userService = userService;
+            _productService = productService;
         }
         // GET: Home
         public ActionResult Index()
@@ -33,7 +35,7 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult Index(UserViewModel viewModel)
         {
-            var login = _userService.Login(viewModel.Username,viewModel.Password);
+            var login = _userService.Login(viewModel.Username, viewModel.Password);
 
             if(login.Success)
             {
@@ -49,17 +51,62 @@ namespace MVCConfigurator.UI.Controllers
                 return RedirectToAction("User");
             }
 
-            ModelState.AddModelError("username",login.Error.ToString());
+            ModelState.AddModelError("username", login.Error.ToString());
             return View();
         }
 
         #region Admin
-        [CustomAuthAttribute]
+        //[CustomAuthAttribute]
         public ActionResult CreateProduct()
         {
+            var viewModel = new ProductViewModel();
+            viewModel.Categories = _productService.GetAllProductCategories().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
+
+            return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
+        }
+        [HttpPost]
+        public ActionResult CreateProduct(ProductViewModel model)
+        {
+            var product = new Product()
+            {
+                Name = model.Product.Name,
+                Category = new ProductCategory { Name = model.Product.Name },
+                ImagePath = model.Product.ImagePath
+            };
+            product = _productService.AddProduct(product);
+
+            return RedirectToAction("ProductPartList", product.Id);
+        }
+        public ActionResult AddPart(Product product)
+        {
+            var viewModel = new PartViewModel();
+            viewModel.Categories = _productService.GetAllPartCategoriesByProduct(product).Select(
+                c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
+
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult AddPart(PartViewModel model)
+        {
+
             return View("~/Views/Admin/CreateProduct.cshtml");
         }
-
+        public ActionResult ProductPartList(int id)
+        {
+            var product = _productService.GetProduct(id);
+            var viewModel = new ProductViewModel
+            {
+                Product = new ProductModel
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Parts = product.Parts,
+                    ImagePath = product.ImagePath,
+                    ProductCode=product.ProductCode
+                },
+            };
+            return View(viewModel);
+        }
         [CustomAuthAttribute]
         public ActionResult ProductDetails()
         {
@@ -116,7 +163,7 @@ namespace MVCConfigurator.UI.Controllers
             return View("~/Views/User/ProductList.cshtml");
         }
 
-        
+
 
         [Authorize]
         public ActionResult User()
@@ -147,15 +194,15 @@ namespace MVCConfigurator.UI.Controllers
                 Phone = viewModel.UserDetails.Phone
             };
 
-            var response = _userService.RegisterUser(viewModel.Username,viewModel.Password,viewModel.ConfirmPassword, userDetails);
-            
+            var response = _userService.RegisterUser(viewModel.Username, viewModel.Password, viewModel.ConfirmPassword, userDetails);
+
             if(response.Success)
             {
                 return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("username", response.Error.ToString());
-            
+
             return View();
         }
 

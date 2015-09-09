@@ -26,7 +26,7 @@ namespace MVCConfigurator.DAL.Repositories
             return _context.Users.FirstOrDefault(x => x.UserName == username);
         }
 
-        public User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash)
+        public User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash, UserDetails userDetails)
         {
             var user = new User()
             {
@@ -34,6 +34,7 @@ namespace MVCConfigurator.DAL.Repositories
                 Salt = passwordSalt,
                 UserName = username,
                 IsAdmin = false,
+                UserDetails = userDetails
             };
 
             _context.Users.Add(user);

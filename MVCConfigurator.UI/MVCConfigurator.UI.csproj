@@ -124,6 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\CustomAuthAttribute.cs" />
@@ -144,16 +145,16 @@
     <Content Include="Views\Home\ResetPassword.cshtml" />
     <Content Include="Views\Home\CreateNewPassword.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
-    <Content Include="Views\Home\Admin\CustomerList.cshtml" />
-    <Content Include="Views\Home\User\ProductList.cshtml" />
-    <Content Include="Views\Home\Admin\AdminProductList.cshtml" />
-    <Content Include="Views\Home\Admin\CreateProduct.cshtml" />
-    <Content Include="Views\Home\Admin\ProductDetails.cshtml" />
-    <Content Include="Views\Home\Admin\CustomerDetails.cshtml" />
-    <Content Include="Views\Home\User\SelectParts.cshtml" />
-    <Content Include="Views\Home\User\ConfirmOrder.cshtml" />
-    <Content Include="Views\Home\User\OrderList.cshtml" />
-    <Content Include="Views\Home\User\Profile.cshtml" />
+    <Content Include="Views\Admin\CustomerList.cshtml" />
+    <Content Include="Views\User\ProductList.cshtml" />
+    <Content Include="Views\Admin\AdminProductList.cshtml" />
+    <Content Include="Views\Admin\CreateProduct.cshtml" />
+    <Content Include="Views\Admin\ProductDetails.cshtml" />
+    <Content Include="Views\Admin\CustomerDetails.cshtml" />
+    <Content Include="Views\User\SelectParts.cshtml" />
+    <Content Include="Views\User\ConfirmOrder.cshtml" />
+    <Content Include="Views\User\OrderList.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

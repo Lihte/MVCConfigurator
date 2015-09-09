@@ -49,7 +49,7 @@ namespace MVCConfigurator.Domain.Services
 
         }
 
-        public Response<User> RegisterUser(string username, string password, string confirmPassword)
+        public Response<User> RegisterUser(string username, string password, string confirmPassword, UserDetails userDetails)
         {
             
             var response = new Response<User>();
@@ -69,7 +69,7 @@ namespace MVCConfigurator.Domain.Services
 
                 _passwordHandler.SaltAndHash(password, out salt, out hash);
 
-                var user = _userRepository.CreateUser(username, salt, hash);
+                var user = _userRepository.CreateUser(username, salt, hash, userDetails);
                 response.Entity = user;
             }
 

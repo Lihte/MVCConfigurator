@@ -1,7 +1,36 @@
-﻿
+﻿@model MVCConfigurator.UI.Models.ProductListViewModel
+
 @{
     ViewBag.Title = "AdminProductList";
 }
 
 <h2>AdminProductList</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            @*<th>Category</th>*@
+            <th>ImagePath</th>
+            <th>Number of Parts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var p in Model.Products)
+        {
+            <tr>
+                <td>@p.Id</td>
+                <td>@p.Name</td>
+                @*<td>@p.Category.Name</td>*@
+                <td>@p.ImagePath</td>
+                <td>@p.Parts.Count()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Create New Product", "CreateProduct")
+</div>
 

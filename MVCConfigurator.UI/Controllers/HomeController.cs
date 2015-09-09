@@ -1,4 +1,5 @@
-﻿using MVCConfigurator.Domain.Services;
+﻿using MVCConfigurator.Domain.Models;
+using MVCConfigurator.Domain.Services;
 using MVCConfigurator.UI.Models;
 using MVCConfigurator.UI.Security;
 using MVCConfigurator.UI.Services;
@@ -15,6 +16,8 @@ namespace MVCConfigurator.UI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
+
+        private static User CurrentUser;
 
         public HomeController(IUserService userService, IAuthenticationService authenticationService)
         {
@@ -36,6 +39,8 @@ namespace MVCConfigurator.UI.Controllers
             {
                 _authenticationService.LoginUser(login.Entity, HttpContext, false);
 
+                CurrentUser = HttpContext.User as User;
+
                 if(login.Entity.IsAdmin)
                 {
                     return RedirectToAction("Admin");
@@ -52,62 +57,66 @@ namespace MVCConfigurator.UI.Controllers
         [CustomAuthAttribute]
         public ActionResult CreateProduct()
         {
-            return View("~/Views/Home/Admin/CreateProduct.cshtml");
+            return View("~/Views/Admin/CreateProduct.cshtml");
         }
 
         [CustomAuthAttribute]
         public ActionResult ProductDetails()
         {
-            return View("~/Views/Home/Admin/ProductDetails.cshtml");
+            return View("~/Views/Admin/ProductDetails.cshtml");
         }
 
         [CustomAuthAttribute]
         public ActionResult CustomerList()
         {
-            return View("~/Views/Home/Admin/CustomerList.cshtml");
+            return View("~/Views/Admin/CustomerList.cshtml");
         }
         #endregion
 
         #region Customer
-
+        [Authorize]
         public ActionResult CustomerDetails()
         {
-            return View("~/Views/Home/Admin/CustomerDetails.cshtml");
+            return View("~/Views/Admin/CustomerDetails.cshtml");
+        }
+
+        [Authorize]
+        public ActionResult SelectParts()
+        {
+            return View("~/Views/User/SelectParts.cshtml");
+        }
+
+        [Authorize]
+        public ActionResult ConfirmOrder()
+        {
+            return View("~/Views/User/ConfirmOrder.cshtml");
+        }
+
+        [Authorize]
+        public ActionResult OrderList()
+        {
+            return View("~/Views/User/OrderList.cshtml");
+        }
+
+        [Authorize]
+        public ActionResult Profile()
+        {
+            return View("~/Views/User/Profile.cshtml");
         }
 
         #endregion
 
         public ActionResult ProductList()
         {
-            var user = HttpContext.User;
-
-            if(user.IsInRole(""))
+            if(CurrentUser.IsAdmin)
             {
-                return View("~/Views/Home/Admin/AdminProductList.cshtml");
+                return View("~/Views/Admin/AdminProductList.cshtml");
             }
 
-            return View("~/Views/Home/User/ProductList.cshtml");
+            return View("~/Views/User/ProductList.cshtml");
         }
 
-        public ActionResult SelectParts()
-        {
-            return View("~/Views/Home/User/SelectProducts.cshtml");
-        }
-
-        public ActionResult ConfirmOrder()
-        {
-            return View("~/Views/Home/User/ConfirmOrder.cshtml");
-        }
-
-        public ActionResult OrderList()
-        {
-            return View("~/Views/Home/User/OrderList.cshtml");
-        }
-
-        public ActionResult Profile()
-        {
-            return View("~/Views/Home/User/Profile.cshtml");
-        }
+        
 
         [Authorize]
         public ActionResult User()
@@ -127,9 +136,18 @@ namespace MVCConfigurator.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateUser(UserViewModel viewModel)
+        public ActionResult CreateUser(RegisterViewModel viewModel)
         {
-            var response = _userService.RegisterUser(viewModel.Username,viewModel.Password,viewModel.ConfirmPassword);
+            var userDetails = new UserDetails()
+            {
+                FirstName = viewModel.UserDetails.FirstName,
+                LastName = viewModel.UserDetails.LastName,
+                Company = viewModel.UserDetails.Company,
+                Address = viewModel.UserDetails.Address,
+                Phone = viewModel.UserDetails.Phone
+            };
+
+            var response = _userService.RegisterUser(viewModel.Username,viewModel.Password,viewModel.ConfirmPassword, userDetails);
             
             if(response.Success)
             {

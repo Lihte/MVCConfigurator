@@ -17,14 +17,14 @@ namespace MVCConfigurator.DAL.Repositories
         {
             return users.FirstOrDefault(u => u.UserName == username);
         }
-        public User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash)
+        public User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash, UserDetails userDetails)
         {
             var user = new User()
             {
                 Hash = passwordHash,
                 Salt = passwordSalt,
                 UserName = username,
-                Id = users.Count()+1,
+                Id = users.Count() + 1,
                 IsAdmin = true,
             };
 
@@ -35,7 +35,7 @@ namespace MVCConfigurator.DAL.Repositories
         public User UpdateUser(User user)
         {
             var existingUser = GetByUsername(user.UserName);
-            if(existingUser != null)
+            if (existingUser != null)
             {
                 existingUser = user;
             }

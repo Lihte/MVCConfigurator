@@ -10,7 +10,7 @@ namespace MVCConfigurator.Domain.Repositories
     public interface IUserRepository
         {
         User GetByUsername(string username);
-        User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash);
+        User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash, UserDetails userDetails);
         User UpdateUser(User user);
         }
     }

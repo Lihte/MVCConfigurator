@@ -11,7 +11,7 @@ namespace MVCConfigurator.Domain.Services
     public interface IUserService
         {
         Response<User> Login(string username, string password);
-        Response<User> RegisterUser(string username, string password, string confirmPassword);
+        Response<User> RegisterUser(string username, string password, string confirmPassword, UserDetails userDetails);
         //User AuthenticateRequest(HttpContextBase httpContext);
         Response<User> Get(string userName);
         Response<User> UpdateUser(User user);

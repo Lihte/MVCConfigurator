@@ -1,4 +1,4 @@
-﻿@model MVCConfigurator.UI.Models.UserViewModel
+﻿@model MVCConfigurator.UI.Models.RegisterViewModel
 @{
     ViewBag.Title = "Create User";
 }
@@ -19,6 +19,47 @@
                 @Html.ValidationMessageFor(model => model.Username)
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserDetails.FirstName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserDetails.FirstName)
+                @Html.ValidationMessageFor(model => model.UserDetails.FirstName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserDetails.LastName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserDetails.LastName)
+                @Html.ValidationMessageFor(model => model.UserDetails.LastName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserDetails.Address, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserDetails.Address)
+                @Html.ValidationMessageFor(model => model.UserDetails.Address)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserDetails.Company, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserDetails.Company)
+                @Html.ValidationMessageFor(model => model.UserDetails.Company)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserDetails.Phone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserDetails.Phone)
+                @Html.ValidationMessageFor(model => model.UserDetails.Phone)
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

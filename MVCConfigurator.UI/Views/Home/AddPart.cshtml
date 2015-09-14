@@ -1,0 +1,22 @@
+﻿@model MVCConfigurator.UI.Models.PartViewModel
+@{
+    ViewBag.Title = "AddPart";
+}
+<h2>AddPart</h2>
+
+@using(Html.BeginForm())
+{
+    @Html.LabelFor(m => m.PartDetails.Category)<br />
+    @Html.TextBoxFor(m => m.PartDetails.Category)
+    @Html.EditorFor(m=>m.PartDetails)
+    @*@Html.LabelFor(m=>m.Category)
+    @Html.EditorFor(m=>m.Category)
+    @Html.LabelFor(m => m.Name)
+    @Html.EditorFor(m=>m.Name)
+    @Html.LabelFor(m => m.Price)
+    @Html.LabelFor(m => m.LeadTime)
+    @Html.LabelFor(m => m.StockKeepingUnit)
+    @Html.LabelFor(m => m.ImagePath)*@
+}
+
+

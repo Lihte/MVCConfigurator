@@ -22,8 +22,9 @@ namespace MVCConfigurator.UI.Models
         {
             Parts = new List<Part>();
         }
+
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Category { get; set; }
         public string ProductCode { get; set; }
         public string ImagePath { get; set; }
         public IList<Part> Parts { get; set; }

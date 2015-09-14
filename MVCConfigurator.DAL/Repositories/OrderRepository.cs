@@ -41,6 +41,7 @@ namespace MVCConfigurator.DAL.Repositories
         public Order AddOrder(Order order)
         {
             _context.Orders.Add(order);
+            _context.SaveChanges();
             return order;
         }
 
@@ -50,6 +51,7 @@ namespace MVCConfigurator.DAL.Repositories
             if(exisitingOrder != null)
             {
                 exisitingOrder = order;
+                _context.SaveChanges();
                 return true;
             }
             return false;

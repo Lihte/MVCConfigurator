@@ -6,20 +6,10 @@
 <h2>CreateProduct</h2>
 @using(Html.BeginForm())
 {
-    <fieldset>
-        <form>
-            @*<div>
-                @Html.Label("Categories")
-                @Html.DropDownList("Categories", Model.Categories, "")  
-            </div>*@
+    @Html.TextBoxFor(m => m.Product.Category)
+    @Html.TextBoxFor(m => m.Product.ImagePath)
 
-            <div>
-                @Html.Label("New Category")
-                @Html.EditorFor(m=>m.Product.Name)
-            </div>
-            
-        </form>
-    </fieldset>
+    <input type="submit" value="submit" />
 }
 
 

@@ -25,6 +25,7 @@ namespace MVCConfigurator.DAL.Repositories
         public Product AddProduct(Product product)
         {
             _context.Products.Add(product);
+            _context.SaveChanges();
             return product;
         }
 
@@ -62,6 +63,7 @@ namespace MVCConfigurator.DAL.Repositories
             if(prod != null)
             {
                 prod = product;
+                _context.SaveChanges();
                 return true;
             }
             return false;

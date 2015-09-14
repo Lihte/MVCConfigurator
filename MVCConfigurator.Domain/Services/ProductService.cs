@@ -59,6 +59,10 @@ namespace MVCConfigurator.Domain.Services
 
         public IList<PartCategory> GetAllPartCategoriesByProduct(Product product)
         {
+            if(product.Parts==null)
+            {
+                return new List<PartCategory>();
+            }
             return product.Parts.Select(p => p.Category).ToList();
         }
 

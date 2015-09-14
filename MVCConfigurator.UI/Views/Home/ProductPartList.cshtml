@@ -1,0 +1,37 @@
+﻿@model MVCConfigurator.UI.Models.ProductViewModel
+@{
+    ViewBag.Title = "ProductPartList";
+}
+
+<h2>ProductPartList</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Lead Time</th>
+            <th>SKU</th>
+            <th>Image Path</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Product.Parts)
+        {
+            <tr>
+                <td>@item.Category.Name</td>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.LeadTime</td>
+                <td>@item.StockKeepingUnit</td>
+                <td>@item.ImagePath</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<hr />
+@Html.ActionLink("AddPart", "AddPart", new { id = Model.Product.Id })
+
+

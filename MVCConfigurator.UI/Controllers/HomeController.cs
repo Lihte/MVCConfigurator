@@ -69,27 +69,39 @@ namespace MVCConfigurator.UI.Controllers
         {
             var product = new Product()
             {
-                Name = model.Product.Name,
-                Category = new ProductCategory { Name = model.Product.Name },
+                Name = model.Product.Category,
+                Category = new ProductCategory { Name = model.Product.Category },
                 ImagePath = model.Product.ImagePath
             };
             product = _productService.AddProduct(product);
 
-            return RedirectToAction("ProductPartList", product.Id);
+            return RedirectToAction("ProductPartList", new { id = product.Id });
         }
-        public ActionResult AddPart(Product product)
+        public ActionResult AddPart(int id)
         {
             var viewModel = new PartViewModel();
-            viewModel.Categories = _productService.GetAllPartCategoriesByProduct(product).Select(
+            viewModel.Categories = _productService.GetAllPartCategoriesByProduct(_productService.GetProduct(id)).Select(
                 c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
-
+            viewModel.ProductId = id;
             return View(viewModel);
         }
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
+            var part = new Part(){
+                Category = model.PartDetails.Category,
+                ImagePath = model.PartDetails.ImagePath,
+                LeadTime = model.PartDetails.LeadTime,
+                Name = model.PartDetails.Name,
+                Price = model.PartDetails.Price,
+                StockKeepingUnit = model.PartDetails.StockKeepingUnit
+                };
 
-            return View("~/Views/Admin/CreateProduct.cshtml");
+            var product = _productService.GetProduct(model.ProductId);
+            product.Parts.Add(part);
+            _productService.UpdateProduct(product);
+
+            return RedirectToAction("ProductPartList", new {id = product.Id });
         }
         public ActionResult ProductPartList(int id)
         {
@@ -98,8 +110,8 @@ namespace MVCConfigurator.UI.Controllers
             {
                 Product = new ProductModel
                 {
-                    Id = product.Id,
-                    Name = product.Name,
+                    Id = id,
+                    Category = product.Name,
                     Parts = product.Parts,
                     ImagePath = product.ImagePath,
                     ProductCode=product.ProductCode
@@ -162,7 +174,7 @@ namespace MVCConfigurator.UI.Controllers
                     Products = _productService.GetAllProducts()
                 };
 
-                return View("~/Views/Admin/AdminProductList.cshtml");
+                return View("~/Views/Admin/AdminProductList.cshtml",viewModel);
             }
 
             return View("~/Views/User/ProductList.cshtml");

@@ -9,6 +9,7 @@ namespace MVCConfigurator.UI.Models
 {
     public class PartViewModel
     {
+        public int ProductId { get; set; }
         public PartModel PartDetails {get; set;}
         public IEnumerable<SelectListItem> Categories { get; set; }
     }

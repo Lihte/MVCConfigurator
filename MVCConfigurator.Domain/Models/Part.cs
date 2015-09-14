@@ -13,7 +13,7 @@ namespace MVCConfigurator.Domain.Models
         public int LeadTime { get; set; }
         public string StockKeepingUnit { get; set; }
         public string ImagePath { get; set; }
-        public PartCategory Category{ get; set; }
+        public virtual PartCategory Category{ get; set; }
         public virtual IList<Part> IncompatibleParts { get; set; }
     }
 }

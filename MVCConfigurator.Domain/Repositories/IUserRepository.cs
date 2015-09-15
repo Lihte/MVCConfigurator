@@ -12,5 +12,6 @@ namespace MVCConfigurator.Domain.Repositories
         User GetByUsername(string username);
         User CreateUser(string username, byte[] passwordSalt, byte[] passwordHash, UserDetails userDetails);
         User UpdateUser(User user);
+        IList<User> GetAllUsers();
         }
     }

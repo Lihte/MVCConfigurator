@@ -15,6 +15,6 @@ namespace MVCConfigurator.Domain.Services
         //User AuthenticateRequest(HttpContextBase httpContext);
         Response<User> Get(string userName);
         Response<User> UpdateUser(User user);
-
+        IList<User> GetAllUsers();
         }
     }

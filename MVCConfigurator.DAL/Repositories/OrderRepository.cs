@@ -23,11 +23,6 @@ namespace MVCConfigurator.DAL.Repositories
             _context = new ConfiguratorContext();
         }
 
-        public IEnumerable<Order> GetAllOrders()
-        {
-            return _context.Orders;
-        }
-
         public Order GetOrderById(int orderId)
         {
             return _context.Orders.FirstOrDefault(x => x.Id == orderId);
@@ -66,6 +61,11 @@ namespace MVCConfigurator.DAL.Repositories
                 return true;
             }
             return false;
+        }
+
+        public IEnumerable<Order> GetOrdersByCustomer(int id)
+        {
+            return _context.Orders.Where(c => c.User.Id == id);
         }
     }
 }

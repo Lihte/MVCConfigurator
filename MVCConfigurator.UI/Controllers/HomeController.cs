@@ -18,14 +18,16 @@ namespace MVCConfigurator.UI.Controllers
         private readonly IProductService _productService;
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IOrderService _orderService;
 
         private static User CurrentUser;
 
-        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService)
+        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService,IOrderService orderService)
         {
             _userService = userService;
             _productService = productService;
             _authenticationService = authenticationService;
+            _orderService = orderService;
         }
         // GET: Home
         public ActionResult Index()
@@ -57,7 +59,7 @@ namespace MVCConfigurator.UI.Controllers
         }
 
         #region Admin
-        //[CustomAuthAttribute]
+        [Authorize]
         public ActionResult CreateProduct()
         {
             var viewModel = new ProductViewModel();
@@ -65,7 +67,7 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
-
+        
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
@@ -160,15 +162,38 @@ namespace MVCConfigurator.UI.Controllers
         [CustomAuthAttribute]
         public ActionResult CustomerList()
         {
-            return View("~/Views/Admin/CustomerList.cshtml");
+            var model = new CustomerListViewModel()
+            {
+                Users = _userService.GetAllUsers().Where(u=>u.IsAdmin==true).ToList()
+            };
+            return View("~/Views/Admin/CustomerList.cshtml",model);
         }
         #endregion
 
         #region Customer
         [Authorize]
-        public ActionResult CustomerDetails()
+        public ActionResult CustomerDetails(string userName)
         {
-            return View("~/Views/Admin/CustomerDetails.cshtml");
+            var customer = _userService.Get(userName);
+            var orders = _orderService.GetOrdersByCustomer(customer.Entity.Id);
+            var model = new CustomerDetailsViewModel()
+            {
+                Orders = orders.Select(o => new OrderModel{ Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
+                Customer = customer.Entity
+            };
+            return View("~/Views/Admin/CustomerDetails.cshtml",model);
+        }
+        [HttpPost]
+        public ActionResult CustomerDetails(CustomerDetailsViewModel model)
+        {
+            foreach(var item in model.Orders)
+            {
+                var order =_orderService.GetOrderById(item.Id);
+                order.IsReady = item.IsReady;
+                _orderService.UpdateOrder(order);
+            }
+
+            return RedirectToAction("CustomerList");
         }
 
         [Authorize]
@@ -210,12 +235,6 @@ namespace MVCConfigurator.UI.Controllers
             }
 
             return View("~/Views/User/ProductList.cshtml");
-        }
-
-        [Authorize]
-        public ActionResult User()
-        {
-            return View();
         }
 
         [CustomAuthAttribute]

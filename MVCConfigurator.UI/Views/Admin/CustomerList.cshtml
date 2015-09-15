@@ -1,7 +1,17 @@
-﻿
+﻿@model MVCConfigurator.UI.Models.CustomerListViewModel
 @{
     ViewBag.Title = "CustomerList";
 }
 
 <h2>CustomerList</h2>
-
+<table class="table table-responsive">
+    <tr>
+        <th>Customer Name</th>
+    </tr>
+    @foreach(var item in Model.Users)
+    {
+        <tr>
+            <td>@Html.ActionLink(item.UserName, "CustomerDetails", new {userName = item.UserName })</td>
+        </tr>
+    }
+</table>

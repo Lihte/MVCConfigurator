@@ -14,7 +14,7 @@ namespace MVCConfiguratorTest
         [TestMethod]
         public void AssertThatGetAllOrdersDoesNotReturnNullList()
         {
-            Assert.IsTrue(_service.GetAllOrders().Count > 0);
+            Assert.IsTrue(_service.GetOrdersByCustomer(1).Count > 0);
         }
 
         [TestMethod]

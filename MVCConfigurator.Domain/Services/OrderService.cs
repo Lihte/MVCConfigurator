@@ -17,11 +17,6 @@ namespace MVCConfigurator.Domain.Services
             _repository = repository;
         }
 
-        public IList<Order> GetAllOrders()
-        {
-            return _repository.GetAllOrders().ToList();
-        }
-
         public Order GetOrderById(int orderId)
         {
             return _repository.GetOrderById(orderId);
@@ -45,6 +40,11 @@ namespace MVCConfigurator.Domain.Services
         public bool DeleteOrder(Order order)
         {
             return _repository.DeleteOrder(order);
+        }
+
+        public IList<Order> GetOrdersByCustomer(int id)
+        {
+            return _repository.GetOrdersByCustomer(id).ToList();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace MVCConfigurator.Domain.Services
 {
     public interface IOrderService
     {
-        IList<Order> GetAllOrders();
+        IList<Order> GetOrdersByCustomer(int id);
         Order GetOrderById(int orderId);
         IList<Order> GetOrderByProduct(Product product);
         Order AddOrder(Order order);

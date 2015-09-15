@@ -9,7 +9,7 @@ namespace MVCConfigurator.Domain.Repositories
 {
     public interface IOrderRepository
     {
-        IEnumerable<Order> GetAllOrders();
+        IEnumerable<Order> GetOrdersByCustomer(int id);
         Order GetOrderById(int orderId);
         IEnumerable<Order> GetOrdersByProduct(Product product);
         Order AddOrder(Order order);

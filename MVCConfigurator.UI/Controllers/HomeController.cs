@@ -69,6 +69,13 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
+            var categories = _productService.GetAllProductCategories();
+
+            if(categories.Any(c => c.Name == model.Product.Category))
+            {
+                return View("~/Views/Admin/CreateProduct.cshtml");
+            }
+
             var product = new Product()
             {
                 Name = model.Product.Category,

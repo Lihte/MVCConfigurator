@@ -12,7 +12,24 @@ using System.Web.Mvc;
 
 namespace MVCConfigurator.UI.Controllers
 {
-    public class HomeController : Controller
+    public abstract class BaseController:Controller
+    {
+        private readonly ValidateAntiForgeryTokenAttribute _antiForgeryValidator;
+        public BaseController()
+        {
+            _antiForgeryValidator = new ValidateAntiForgeryTokenAttribute();
+        }
+        protected override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if(filterContext.HttpContext.Request.GetHttpMethodOverride()
+                .Equals("post",StringComparison.CurrentCultureIgnoreCase))
+            {
+                _antiForgeryValidator.OnAuthorization(filterContext);
+            }
+            base.OnAuthorization(filterContext);
+        }
+    }
+    public class HomeController : BaseController
     {
         private IProductService _productService;
         private readonly IUserService _userService;
@@ -31,7 +48,7 @@ namespace MVCConfigurator.UI.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
         public ActionResult Index(UserViewModel viewModel)
         {
@@ -64,6 +81,7 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
+        
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
@@ -85,6 +103,7 @@ namespace MVCConfigurator.UI.Controllers
             viewModel.ProductId = id;
             return View(viewModel);
         }
+        
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
@@ -199,6 +218,7 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public ActionResult CreateUser(RegisterViewModel viewModel)
         {
@@ -228,6 +248,7 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public ActionResult ResetPassword(UserViewModel user)
         {

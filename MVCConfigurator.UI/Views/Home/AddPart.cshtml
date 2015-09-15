@@ -6,6 +6,7 @@
 
 @using(Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(m=>m.ProductId)
     @Html.DropDownListFor(m=>m.PartDetails.Category.Name,Model.Categories)
     @Html.LabelFor(m => m.PartDetails.Category)<br />

@@ -16,49 +16,49 @@
         <div class="form-group">
             <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.PartDetails.Category.Name, Model.Categories, "-- Select Category --")
+                @*@Html.DropDownListFor(m => m.PartDetails.Category, Model.Categories, "-- Select Category --")*@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.Category, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Category, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.Category.Name)
-                @Html.ValidationMessageFor(model => model.PartDetails.Category.Name)
+                @Html.EditorFor(m => m.PartDetails.Category)
+                @Html.ValidationMessageFor(m => m.PartDetails.Category)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.Name, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.Name)
-                @Html.ValidationMessageFor(model => model.PartDetails.Name)
+                @Html.EditorFor(m => m.PartDetails.Name)
+                @Html.ValidationMessageFor(m => m.PartDetails.Name)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.Price, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Price, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.Price)
-                @Html.ValidationMessageFor(model => model.PartDetails.Price)
+                @Html.EditorFor(m => m.PartDetails.Price)
+                @Html.ValidationMessageFor(m => m.PartDetails.Price)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.LeadTime, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.LeadTime, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.LeadTime)
-                @Html.ValidationMessageFor(model => model.PartDetails.LeadTime)
+                @Html.EditorFor(m => m.PartDetails.LeadTime)
+                @Html.ValidationMessageFor(m => m.PartDetails.LeadTime)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.StockKeepingUnit, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.StockKeepingUnit, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.StockKeepingUnit)
-                @Html.ValidationMessageFor(model => model.PartDetails.StockKeepingUnit)
+                @Html.EditorFor(m => m.PartDetails.StockKeepingUnit)
+                @Html.ValidationMessageFor(m => m.PartDetails.StockKeepingUnit)
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PartDetails.ImagePath, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.ImagePath, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PartDetails.ImagePath)
-                @Html.ValidationMessageFor(model => model.PartDetails.ImagePath)
+                @Html.EditorFor(m => m.PartDetails.ImagePath)
+                @Html.ValidationMessageFor(m => m.PartDetails.ImagePath)
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
             {
                 <tr>
                     <td>@Html.HiddenFor(m => m.ExistingParts[i].Id)</td>
-                    <td>@Model.ExistingParts[i].Category.Name)</td>
+                    <td>@Model.ExistingParts[i].Category)</td>
                     <td>@Model.ExistingParts[i].Name)</td>
                     <td>@Model.ExistingParts[i].Price</td>
                     <td>@Model.ExistingParts[i].LeadTime</td>

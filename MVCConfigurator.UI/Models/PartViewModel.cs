@@ -23,7 +23,7 @@ namespace MVCConfigurator.UI.Models
         public int LeadTime { get; set; }
         public string StockKeepingUnit { get; set; }
         public string ImagePath { get; set; }
-        public PartCategory Category { get; set; }
+        public string Category { get; set; }
         public bool IsIncompatible { get; set; }
     }
 }

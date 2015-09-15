@@ -96,7 +96,7 @@ namespace MVCConfigurator.UI.Controllers
             var viewModel = new PartViewModel()
             {
                 Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
-                ExistingParts = product.Parts.Select(p => new PartModel {Id = p.Id, Name = p.Name, Category = p.Category, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit}).ToList(),
+                ExistingParts = product.Parts.Select(p => new PartModel {Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit}).ToList(),
                 ProductId = id
             };
 
@@ -123,7 +123,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = new Part()
             {
-                Category = model.PartDetails.Category,
+                Category = new PartCategory { Name = model.PartDetails.Category },
                 ImagePath = model.PartDetails.ImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,

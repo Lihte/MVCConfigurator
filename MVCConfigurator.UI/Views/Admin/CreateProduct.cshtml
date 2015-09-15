@@ -6,6 +6,7 @@
 <h2>CreateProduct</h2>
 @using(Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     @Html.TextBoxFor(m => m.Product.Category)
     @Html.TextBoxFor(m => m.Product.ImagePath)
 

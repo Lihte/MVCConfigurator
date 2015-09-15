@@ -68,10 +68,6 @@ namespace MVCConfigurator.DAL.Repositories
         };
         #endregion
 
-        public IEnumerable<Order> GetAllOrders()
-        {
-            return _orderList;
-        }
 
         public Order GetOrderById(int orderId)
         {
@@ -110,6 +106,11 @@ namespace MVCConfigurator.DAL.Repositories
                 return true;
             }
             return false;
+        }
+
+        public IEnumerable<Order> GetOrdersByCustomer(int id)
+        {
+            return _orderList.Where(c => c.User.Id == id);
         }
     }
 }

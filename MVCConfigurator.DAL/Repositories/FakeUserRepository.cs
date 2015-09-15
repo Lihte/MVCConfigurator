@@ -41,5 +41,11 @@ namespace MVCConfigurator.DAL.Repositories
             }
             return existingUser;
         }
+
+
+        public IList<User> GetAllUsers()
+        {
+            return new List<User>();
+        }
     }
 }

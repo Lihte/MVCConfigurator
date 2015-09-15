@@ -86,5 +86,11 @@ namespace MVCConfigurator.Domain.Services
         {
            return new Response<User> { Entity = _userRepository.UpdateUser(user) };
         }
+
+
+        public IList<User> GetAllUsers()
+        {
+            return _userRepository.GetAllUsers();
+        }
     }
 }

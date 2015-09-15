@@ -82,22 +82,43 @@ namespace MVCConfigurator.UI.Controllers
                 Category = new ProductCategory { Name = model.Product.Category },
                 ImagePath = model.Product.ImagePath
             };
+
             product = _productService.AddProduct(product);
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }
         public ActionResult AddPart(int id)
         {
-            var viewModel = new PartViewModel();
-            viewModel.Categories = _productService.GetAllPartCategoriesByProduct(_productService.GetProduct(id)).Select(
-                c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
-            viewModel.ProductId = id;
+            var product = _productService.GetProduct(id);
+
+            var viewModel = new PartViewModel()
+            {
+                Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
+                ExistingParts = product.Parts.Select(p => new PartModel {Id = p.Id, Name = p.Name, Category = p.Category, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit}).ToList(),
+                ProductId = id
+            };
+
             return View(viewModel);
         }
 
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
+            var product = _productService.GetProduct(model.ProductId);
+
+            var incompatibleParts = new List<Part>();
+
+            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
+            {
+                foreach (var item in model.ExistingParts)
+                {
+                    if (item.IsIncompatible)
+                    {
+                        incompatibleParts.Add(product.Parts.First(p => p.Id == item.Id));
+                    }
+                }
+            }
+
             var part = new Part()
             {
                 Category = model.PartDetails.Category,
@@ -105,10 +126,10 @@ namespace MVCConfigurator.UI.Controllers
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,
                 Price = model.PartDetails.Price,
-                StockKeepingUnit = model.PartDetails.StockKeepingUnit
+                StockKeepingUnit = model.PartDetails.StockKeepingUnit,
+                IncompatibleParts = incompatibleParts
             };
 
-            var product = _productService.GetProduct(model.ProductId);
             product.Parts.Add(part);
             _productService.UpdateProduct(product);
 

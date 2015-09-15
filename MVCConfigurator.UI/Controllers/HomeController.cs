@@ -9,58 +9,42 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Web.Mvc.Filters;
 
 namespace MVCConfigurator.UI.Controllers
 {
-    public abstract class BaseController:Controller
-    {
-        private readonly ValidateAntiForgeryTokenAttribute _antiForgeryValidator;
-        public BaseController()
-        {
-            _antiForgeryValidator = new ValidateAntiForgeryTokenAttribute();
-        }
-        protected override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            if(filterContext.HttpContext.Request.GetHttpMethodOverride()
-                .Equals("post",StringComparison.CurrentCultureIgnoreCase))
-            {
-                _antiForgeryValidator.OnAuthorization(filterContext);
-            }
-            base.OnAuthorization(filterContext);
-        }
-    }
     public class HomeController : BaseController
     {
-        private IProductService _productService;
+        private readonly IProductService _productService;
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
 
         private static User CurrentUser;
 
-        public HomeController(IUserService userService, IAuthenticationService authenticationService, IProductService productService)
+        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService)
         {
-            _authenticationService = authenticationService;
             _userService = userService;
             _productService = productService;
+            _authenticationService = authenticationService;
         }
         // GET: Home
         public ActionResult Index()
         {
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult Index(UserViewModel viewModel)
         {
             var login = _userService.Login(viewModel.Username, viewModel.Password);
 
-            if(login.Success)
+            if (login.Success)
             {
                 _authenticationService.LoginUser(login.Entity, HttpContext, false);
 
                 CurrentUser = HttpContext.User as User;
 
-                if(login.Entity.IsAdmin)
+                if (login.Entity.IsAdmin)
                 {
                     return RedirectToAction("Admin");
                 }
@@ -81,10 +65,17 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
-        
+
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
+            var categories = _productService.GetAllProductCategories();
+
+            if(categories.Any(c => c.Name == model.Product.Category))
+            {
+                return View("~/Views/Admin/CreateProduct.cshtml");
+            }
+
             var product = new Product()
             {
                 Name = model.Product.Category,
@@ -103,24 +94,25 @@ namespace MVCConfigurator.UI.Controllers
             viewModel.ProductId = id;
             return View(viewModel);
         }
-        
+
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
-            var part = new Part(){
+            var part = new Part()
+            {
                 Category = model.PartDetails.Category,
                 ImagePath = model.PartDetails.ImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,
                 Price = model.PartDetails.Price,
                 StockKeepingUnit = model.PartDetails.StockKeepingUnit
-                };
+            };
 
             var product = _productService.GetProduct(model.ProductId);
             product.Parts.Add(part);
             _productService.UpdateProduct(product);
 
-            return RedirectToAction("ProductPartList", new {id = product.Id });
+            return RedirectToAction("ProductPartList", new { id = product.Id });
         }
         public ActionResult ProductPartList(int id)
         {
@@ -133,7 +125,7 @@ namespace MVCConfigurator.UI.Controllers
                     Category = product.Name,
                     Parts = product.Parts,
                     ImagePath = product.ImagePath,
-                    ProductCode=product.ProductCode
+                    ProductCode = product.ProductCode
                 },
             };
             return View(viewModel);
@@ -186,20 +178,18 @@ namespace MVCConfigurator.UI.Controllers
 
         public ActionResult ProductList()
         {
-            if(CurrentUser.IsAdmin)
+            if (CurrentUser.IsAdmin)
             {
                 var viewModel = new ProductListViewModel
                 {
                     Products = _productService.GetAllProducts()
                 };
 
-                return View("~/Views/Admin/AdminProductList.cshtml",viewModel);
+                return View("~/Views/Admin/AdminProductList.cshtml", viewModel);
             }
 
             return View("~/Views/User/ProductList.cshtml");
         }
-
-
 
         [Authorize]
         public ActionResult User()
@@ -218,7 +208,6 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
-        
         [HttpPost]
         public ActionResult CreateUser(RegisterViewModel viewModel)
         {
@@ -233,7 +222,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var response = _userService.RegisterUser(viewModel.Username, viewModel.Password, viewModel.ConfirmPassword, userDetails);
 
-            if(response.Success)
+            if (response.Success)
             {
                 return RedirectToAction("Index");
             }
@@ -248,7 +237,6 @@ namespace MVCConfigurator.UI.Controllers
             return View();
         }
 
-        
         [HttpPost]
         public ActionResult ResetPassword(UserViewModel user)
         {
@@ -269,9 +257,9 @@ namespace MVCConfigurator.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void OnAuthentication(System.Web.Mvc.Filters.AuthenticationContext filterContext)
+        protected override void OnAuthentication(AuthenticationContext filterContext)
         {
-            if(filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
+            if (filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
             {
                 _authenticationService.AuthenticateRequest(filterContext.HttpContext);
             }

@@ -4,13 +4,32 @@
 }
 
 <h2>CreateProduct</h2>
-@using(Html.BeginForm())
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.TextBoxFor(m => m.Product.Category)
-    @Html.TextBoxFor(m => m.Product.ImagePath)
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
 
-    <input type="submit" value="submit" />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product.Category, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Product.Category)
+                @Html.ValidationMessageFor(model => model.Product.Category)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Product.ImagePath, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Product.ImagePath)
+                @Html.ValidationMessageFor(model => model.Product.ImagePath)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Product" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
 }
 
 

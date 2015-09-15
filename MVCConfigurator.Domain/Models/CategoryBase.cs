@@ -20,7 +20,7 @@ namespace MVCConfigurator.Domain.Models
             if ((System.Object)c == null)
                 return false;
 
-            return Id == c.Id && Name == c.Name;
+            return Name == c.Name;
         }
     }
 }

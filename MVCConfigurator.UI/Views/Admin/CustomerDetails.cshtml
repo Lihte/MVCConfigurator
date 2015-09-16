@@ -5,7 +5,8 @@
 
 <h2>CustomerDetails</h2>
 @Html.HiddenFor(m=>m.Customer.UserName)
-<h3>@Model.Customer.UserName</h3>
+<h4>@Model.Customer.UserName</h4><br />
+<h2>Backorder log</h2>
 
 @using(Html.BeginForm("CustomerDetails")) 
 { 
@@ -22,8 +23,8 @@
         @for(int i = 0; i < Model.Orders.Count; i++)
         {
             <tr>
+                <td>@Model.Orders[i].Id</td>
                 <td>@Model.Orders[i].DeliveryDate.ToShortDateString()@Html.HiddenFor(m => m.Orders[i].DeliveryDate)</td>
-                <td>@Html.HiddenFor(m=>m.Orders[i].Id)</td>
                 <td>@Html.CheckBoxFor(m => m.Orders[i].IsReady)</td>
             </tr>
         }

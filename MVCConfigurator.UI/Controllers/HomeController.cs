@@ -103,10 +103,21 @@ namespace MVCConfigurator.UI.Controllers
             return View(viewModel);
         }
 
+        public ActionResult DeleteProduct(int id)
+        {
+            var product = _productService.GetProduct(id);
+
+            _productService.DeleteProduct(product);
+
+            return RedirectToAction("ProductList");
+        }
+
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
             var product = _productService.GetProduct(model.ProductId);
+
+            var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
             var incompatibleParts = new List<Part>();
 
@@ -123,7 +134,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = new Part()
             {
-                Category = new PartCategory { Name = model.PartDetails.Category },
+                Category = partCategory.Category ?? new PartCategory { Name = model.PartDetails.Category },
                 ImagePath = model.PartDetails.ImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,

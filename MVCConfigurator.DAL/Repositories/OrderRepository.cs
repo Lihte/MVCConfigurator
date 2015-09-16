@@ -9,11 +9,6 @@ using System.Data.Entity;
 
 namespace MVCConfigurator.DAL.Repositories
 {
-    //public class OrderContext : DbContext
-    //{
-    //    public DbSet<Order> Orders { get; set; }
-    //}
-
     public class OrderRepository : IOrderRepository
     {
         private ConfiguratorContext _context;
@@ -58,6 +53,7 @@ namespace MVCConfigurator.DAL.Repositories
             if(exisitingOrder != null)
             {
                 _context.Orders.Remove(exisitingOrder);
+                _context.SaveChanges();
                 return true;
             }
             return false;

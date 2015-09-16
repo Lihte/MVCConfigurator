@@ -14,14 +14,14 @@
     @Html.HiddenFor(m => m.ProductId)
     <div class="form-horizontal">
         <div class="form-group">
-            <div class="col-md-2"></div>
-            <div class="col-md-10" id="catDrop">
-                @Html.DropDownListFor(m => m.PartDetails.CategoryId, Model.Categories, "-- Select Category --")
+            @Html.LabelFor(m => m.PartDetails.Category, "Existing Category", new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-top:7px" ;>
+                @Html.DropDownListFor(m => m.PartDetails.CategoryId, Model.Categories, "-- Select Category --", new { style = "width:175px; height:26px;" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.PartDetails.Category, new { @class = "control-label col-md-2" })
-            <div class="col-md-10" id="catText">
+            @Html.LabelFor(m => m.PartDetails.Category, "New Category", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
                 @Html.EditorFor(m => m.PartDetails.Category)
                 @Html.ValidationMessageFor(m => m.PartDetails.Category)
             </div>
@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-
+    <hr />
     <table class="table table-condensed">
         <thead>
             <tr>
@@ -98,5 +98,15 @@
 
 
 <script type="text/javascript">
+    $("#PartDetails_CategoryId").change(function () {
+        var value = $(this).val();
 
+        if (value != "") {
+            $("#PartDetails_Category").val("");
+            $("#PartDetails_Category").attr("disabled", "disabled");
+        }
+        else {
+            $("#PartDetails_Category").removeAttr("disabled", "disabled");
+        }
+    });
 </script>

@@ -20,7 +20,7 @@ namespace MVCConfigurator.UI.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IOrderService _orderService;
 
-        private static User CurrentUser;
+        public static User CurrentUser;
 
         public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService,IOrderService orderService)
         {
@@ -51,7 +51,7 @@ namespace MVCConfigurator.UI.Controllers
                     return RedirectToAction("Admin");
                 }
 
-                return RedirectToAction("User");
+                return RedirectToAction("Profile");
             }
 
             ModelState.AddModelError("username", login.Error.ToString());
@@ -181,7 +181,8 @@ namespace MVCConfigurator.UI.Controllers
                 Orders = orders.Select(o => new OrderModel{ Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = customer.Entity
             };
-            return View("~/Views/Admin/CustomerDetails.cshtml",model);
+            
+                return View("~/Views/Admin/CustomerDetails.cshtml", model);
         }
         [HttpPost]
         public ActionResult CustomerDetails(CustomerDetailsViewModel model)
@@ -211,7 +212,20 @@ namespace MVCConfigurator.UI.Controllers
         [Authorize]
         public ActionResult OrderList()
         {
-            return View("~/Views/User/OrderList.cshtml");
+            var orders = _orderService.GetOrdersByCustomer(CurrentUser.Id);
+            var model = new CustomerDetailsViewModel()
+            {
+                Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
+                Customer = CurrentUser
+            };
+            
+            return View("~/Views/User/OrderList.cshtml",model);
+        }
+        [Authorize]
+        public ActionResult ConfigureProduct()
+        {
+            var viewModel = new ProductListViewModel { Products = _productService.GetAllProducts() };
+            return View("~/Views/User/ConfigureProduct.cshtml",viewModel);
         }
 
         [Authorize]

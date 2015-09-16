@@ -159,10 +159,12 @@
     <Content Include="Views\Admin\CustomerDetails.cshtml" />
     <Content Include="Views\User\SelectParts.cshtml" />
     <Content Include="Views\User\ConfirmOrder.cshtml" />
-    <Content Include="Views\User\OrderList.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Home\ProductPartList.cshtml" />
     <Content Include="Views\Home\AddPart.cshtml" />
+    <Content Include="Views\User\OrderList.cshtml" />
+    <Content Include="Views\Shared\_CustomerLayout.cshtml" />
+    <Content Include="Views\User\ConfigureProduct.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

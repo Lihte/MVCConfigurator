@@ -15,13 +15,13 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-2"></div>
-            <div class="col-md-10">
-                @*@Html.DropDownListFor(m => m.PartDetails.Category, Model.Categories, "-- Select Category --")*@
+            <div class="col-md-10" id="catDrop">
+                @Html.DropDownListFor(m => m.PartDetails.CategoryId, Model.Categories, "-- Select Category --")
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.PartDetails.Category, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" id="catText">
                 @Html.EditorFor(m => m.PartDetails.Category)
                 @Html.ValidationMessageFor(m => m.PartDetails.Category)
             </div>
@@ -81,8 +81,8 @@
             {
                 <tr>
                     <td>@Html.HiddenFor(m => m.ExistingParts[i].Id)</td>
-                    <td>@Model.ExistingParts[i].Category)</td>
-                    <td>@Model.ExistingParts[i].Name)</td>
+                    <td>@Model.ExistingParts[i].Category</td>
+                    <td>@Model.ExistingParts[i].Name</td>
                     <td>@Model.ExistingParts[i].Price</td>
                     <td>@Model.ExistingParts[i].LeadTime</td>
                     <td>@Model.ExistingParts[i].StockKeepingUnit</td>
@@ -97,4 +97,6 @@
 }
 
 
+<script type="text/javascript">
 
+</script>

@@ -22,7 +22,7 @@ namespace MVCConfigurator.UI.Controllers
 
         private static User CurrentUser;
 
-        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService,IOrderService orderService)
+        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _userService = userService;
             _productService = productService;
@@ -67,13 +67,13 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
-        
+
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
             var categories = _productService.GetAllProductCategories();
 
-            if(categories.Any(c => c.Name == model.Product.Category))
+            if (categories.Any(c => c.Name == model.Product.Category))
             {
                 return View("~/Views/Admin/CreateProduct.cshtml");
             }
@@ -96,7 +96,7 @@ namespace MVCConfigurator.UI.Controllers
             var viewModel = new PartViewModel()
             {
                 Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
-                ExistingParts = product.Parts.Select(p => new PartModel {Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit}).ToList(),
+                ExistingParts = product.Parts.Select(p => new PartModel { Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit }).ToList(),
                 ProductId = id
             };
 
@@ -110,7 +110,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var incompatibleParts = new List<Part>();
 
-            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
+            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
                 foreach (var item in model.ExistingParts)
                 {
@@ -164,9 +164,9 @@ namespace MVCConfigurator.UI.Controllers
         {
             var model = new CustomerListViewModel()
             {
-                Users = _userService.GetAllUsers().Where(u=>u.IsAdmin==true).ToList()
+                Users = _userService.GetAllUsers().Where(u => u.IsAdmin == true).ToList()
             };
-            return View("~/Views/Admin/CustomerList.cshtml",model);
+            return View("~/Views/Admin/CustomerList.cshtml", model);
         }
         #endregion
 
@@ -178,17 +178,17 @@ namespace MVCConfigurator.UI.Controllers
             var orders = _orderService.GetOrdersByCustomer(customer.Entity.Id);
             var model = new CustomerDetailsViewModel()
             {
-                Orders = orders.Select(o => new OrderModel{ Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
+                Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = customer.Entity
             };
-            return View("~/Views/Admin/CustomerDetails.cshtml",model);
+            return View("~/Views/Admin/CustomerDetails.cshtml", model);
         }
         [HttpPost]
         public ActionResult CustomerDetails(CustomerDetailsViewModel model)
         {
-            foreach(var item in model.Orders)
+            foreach (var item in model.Orders)
             {
-                var order =_orderService.GetOrderById(item.Id);
+                var order = _orderService.GetOrderById(item.Id);
                 order.IsReady = item.IsReady;
                 _orderService.UpdateOrder(order);
             }

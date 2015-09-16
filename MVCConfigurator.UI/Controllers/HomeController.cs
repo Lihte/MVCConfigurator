@@ -134,7 +134,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = new Part()
             {
-                Category = partCategory.Category ?? new PartCategory { Name = model.PartDetails.Category },
+                Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category },
                 ImagePath = model.PartDetails.ImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,

@@ -15,6 +15,7 @@
             <th>Category</th>
             <th>ImagePath</th>
             <th>Number of Parts</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,8 @@
                 <td>@p.Category.Name</td>
                 <td>@p.ImagePath</td>
                 <td>@p.Parts.Count()</td>
+                <td>@Html.ActionLink("Add Part", "ProductPartList", new { id = p.Id })</td>
+                <td>@Html.ActionLink("Delete Product", "DeleteProduct", new { id = p.Id })</td>
             </tr>
         }
     </tbody>

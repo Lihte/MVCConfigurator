@@ -15,6 +15,7 @@ namespace MVCConfigurator.DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Part>().HasMany<Part>(x => x.IncompatibleParts).WithMany();
+            modelBuilder.Entity<Product>().HasMany<Part>(x => x.Parts).WithRequired().WillCascadeOnDelete(true);
         }
 
         public DbSet<Order> Orders { get; set; }

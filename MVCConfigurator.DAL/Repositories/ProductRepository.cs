@@ -8,11 +8,6 @@ using System.Collections.Generic;
 
 namespace MVCConfigurator.DAL.Repositories
 {
-    //public class ProductContext : DbContext
-    //{
-    //    public DbSet<Product> Products { get; set; }
-    //    public DbSet<ProductCategory> ProductCategories { get; set; }
-    //}
     public class ProductRepository : IProductRepository
     {
         private ConfiguratorContext _context;
@@ -20,7 +15,6 @@ namespace MVCConfigurator.DAL.Repositories
         {
             _context = new ConfiguratorContext();
         }
-        
         
         public Product AddProduct(Product product)
         {
@@ -51,6 +45,7 @@ namespace MVCConfigurator.DAL.Repositories
             if(prod != null)
             {
                 _context.Products.Remove(prod);
+                _context.SaveChanges();
                 return true;
             }
             return false;

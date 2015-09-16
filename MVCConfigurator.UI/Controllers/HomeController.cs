@@ -22,7 +22,7 @@ namespace MVCConfigurator.UI.Controllers
 
         public static User CurrentUser;
 
-        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService,IOrderService orderService)
+        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _userService = userService;
             _productService = productService;
@@ -73,7 +73,7 @@ namespace MVCConfigurator.UI.Controllers
         {
             var categories = _productService.GetAllProductCategories();
 
-            if(categories.Any(c => c.Name == model.Product.Category))
+            if (categories.Any(c => c.Name == model.Product.Category))
             {
                 return View("~/Views/Admin/CreateProduct.cshtml");
             }
@@ -96,11 +96,20 @@ namespace MVCConfigurator.UI.Controllers
             var viewModel = new PartViewModel()
             {
                 Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
-                ExistingParts = product.Parts.Select(p => new PartModel {Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit}).ToList(),
+                ExistingParts = product.Parts.Select(p => new PartModel { Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit }).ToList(),
                 ProductId = id
             };
 
             return View(viewModel);
+        }
+
+        public ActionResult DeleteProduct(int id)
+        {
+            var product = _productService.GetProduct(id);
+
+            _productService.DeleteProduct(product);
+
+            return RedirectToAction("ProductList");
         }
 
         [HttpPost]
@@ -108,9 +117,11 @@ namespace MVCConfigurator.UI.Controllers
         {
             var product = _productService.GetProduct(model.ProductId);
 
+            var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
+
             var incompatibleParts = new List<Part>();
 
-            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
+            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
                 foreach (var item in model.ExistingParts)
                 {
@@ -123,7 +134,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = new Part()
             {
-                Category = new PartCategory { Name = model.PartDetails.Category },
+                Category = partCategory.Category ?? new PartCategory { Name = model.PartDetails.Category },
                 ImagePath = model.PartDetails.ImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,
@@ -164,9 +175,9 @@ namespace MVCConfigurator.UI.Controllers
         {
             var model = new CustomerListViewModel()
             {
-                Users = _userService.GetAllUsers().Where(u=>u.IsAdmin==true).ToList()
+                Users = _userService.GetAllUsers().Where(u => u.IsAdmin == true).ToList()
             };
-            return View("~/Views/Admin/CustomerList.cshtml",model);
+            return View("~/Views/Admin/CustomerList.cshtml", model);
         }
         #endregion
 
@@ -178,7 +189,7 @@ namespace MVCConfigurator.UI.Controllers
             var orders = _orderService.GetOrdersByCustomer(customer.Entity.Id);
             var model = new CustomerDetailsViewModel()
             {
-                Orders = orders.Select(o => new OrderModel{ Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
+                Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = customer.Entity
             };
             
@@ -187,9 +198,9 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult CustomerDetails(CustomerDetailsViewModel model)
         {
-            foreach(var item in model.Orders)
+            foreach (var item in model.Orders)
             {
-                var order =_orderService.GetOrderById(item.Id);
+                var order = _orderService.GetOrderById(item.Id);
                 order.IsReady = item.IsReady;
                 _orderService.UpdateOrder(order);
             }

@@ -89,19 +89,6 @@ namespace MVCConfigurator.UI.Controllers
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }
-        public ActionResult AddPart(int id)
-        {
-            var product = _productService.GetProduct(id);
-
-            var viewModel = new PartViewModel()
-            {
-                Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
-                ExistingParts = product.Parts.Select(p => new PartModel { Id = p.Id, Name = p.Name, Category = p.Category.Name, LeadTime = p.LeadTime, ImagePath = p.ImagePath, Price = p.Price, StockKeepingUnit = p.StockKeepingUnit }).ToList(),
-                ProductId = id
-            };
-
-            return View(viewModel);
-        }
 
         public ActionResult DeleteProduct(int id)
         {
@@ -110,6 +97,20 @@ namespace MVCConfigurator.UI.Controllers
             _productService.DeleteProduct(product);
 
             return RedirectToAction("ProductList");
+        }
+
+        public ActionResult AddPart(int id)
+        {
+            var product = _productService.GetProduct(id);
+
+            var viewModel = new PartViewModel()
+            {
+                Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
+                ExistingParts = product.Parts.Select(p => new PartModel(p)).ToList(),
+                ProductId = id
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -157,11 +158,12 @@ namespace MVCConfigurator.UI.Controllers
                 {
                     Id = id,
                     Category = product.Name,
-                    Parts = product.Parts,
+                    Parts = product.Parts.Select(p => new PartModel(p)).ToList(),
                     ImagePath = product.ImagePath,
                     ProductCode = product.ProductCode
                 },
             };
+
             return View(viewModel);
         }
         [CustomAuthAttribute]
@@ -209,8 +211,24 @@ namespace MVCConfigurator.UI.Controllers
         }
 
         [Authorize]
-        public ActionResult SelectParts()
+        public ActionResult SelectParts(int id)
         {
+            var product = _productService.GetProduct(id);
+
+            var viewModel = new CustomizeProductViewModel()
+            {
+                Product = new ProductModel(product)
+            };
+
+            viewModel.Product.Parts = product.Parts.Select(p => new PartModel(p)).OrderBy(m => m.CategoryId).ToList();
+
+            return View("~/Views/User/SelectParts.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult SelectParts(CustomizeProductViewModel viewModel)
+        {
+
             return View("~/Views/User/SelectParts.cshtml");
         }
 
@@ -235,7 +253,8 @@ namespace MVCConfigurator.UI.Controllers
         [Authorize]
         public ActionResult ConfigureProduct()
         {
-            var viewModel = new ProductListViewModel { Products = _productService.GetAllProducts() };
+            var viewModel = new CustomizeProductViewModel { Products = _productService.GetAllProducts().Select(p => new ProductViewModel(p)).ToList() };
+
             return View("~/Views/User/ConfigureProduct.cshtml",viewModel);
         }
 

@@ -1,4 +1,5 @@
-﻿
+﻿@model MVCConfigurator.UI.Models.CustomizeProductViewModel
+
 @{
     ViewBag.Title = "ConfigureProduct";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
@@ -6,7 +7,8 @@
 
 <h2>ConfigureProduct</h2>
 
-@using(Html.BeginForm())
+@for (int i = 0; i < Model.Products.Count; i++)
 {
-    
+    @Html.EditorFor(m => m.Products[i].Product)
+    <br />
 }

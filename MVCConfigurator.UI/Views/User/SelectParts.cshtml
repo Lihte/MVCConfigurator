@@ -1,7 +1,50 @@
-﻿
+﻿@model MVCConfigurator.UI.Models.CustomizeProductViewModel
+
 @{
     ViewBag.Title = "SelectParts";
 }
 
 <h2>SelectParts</h2>
 
+@using (Html.BeginForm())
+{
+    for (int i = 0; i < Model.Product.Parts.Count; i++)
+    {
+        if (i == 0)
+        {
+            <h3>@Model.Product.Parts[i].Category</h3>
+            <div style="display:inline-block; border:2px solid black;">
+                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
+                <br />
+                <span>@Model.Product.Parts[i].Name</span>
+            </div>
+        }
+        else if (Model.Product.Parts[i].CategoryId == Model.Product.Parts[i - 1].CategoryId)
+        {
+            <div style="display:inline-block; border:2px solid black;">
+                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
+                <br />
+                <span>@Model.Product.Parts[i].Name</span>
+            </div>
+        }
+        else
+        {
+            <br />
+            <br />
+            <h3>@Model.Product.Parts[i].Category</h3>   
+            <div style="display:inline-block; border:2px solid black;">
+                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
+                <br />
+                <span>@Model.Product.Parts[i].Name</span>
+            </div>
+        }
+    }
+}
+
+
+<script type="text/javascript">
+    function selectPart() {
+        console.log("bitch");
+    };
+
+</script>

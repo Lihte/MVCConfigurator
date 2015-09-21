@@ -17,6 +17,26 @@ namespace MVCConfigurator.UI.Models
 
     public class PartModel
     {
+        public PartModel()
+        {
+
+        }
+
+        public PartModel(Part part)
+        {
+            Id = part.Id;
+            Name = part.Name;
+            Price = part.Price;
+            LeadTime = part.LeadTime;
+            StockKeepingUnit = part.StockKeepingUnit;
+            ImagePath = part.ImagePath;
+            CategoryId = part.Category.Id;
+            Category = part.Category.Name;
+
+            IsIncompatible = false;
+            IsSelected = false;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
@@ -26,5 +46,6 @@ namespace MVCConfigurator.UI.Models
         public int CategoryId { get; set; }
         public string Category { get; set; }
         public bool IsIncompatible { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

@@ -11,22 +11,36 @@ namespace MVCConfigurator.UI.Models
     {
         public ProductViewModel()
         {
-            Product = new ProductModel();
+
+        }
+        public ProductViewModel(Product product)
+        {
+            Product = new ProductModel(product);
         }
         public ProductModel Product { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
     }
     public class ProductModel
     {
+
         public ProductModel()
         {
-            Parts = new List<Part>();
+
+        }
+
+        public ProductModel(Product product)
+        {
+            Id = product.Id;
+            Category = product.Category.Name;
+            ImagePath = product.ImagePath;
+            ProductCode = product.ProductCode;
+            Parts = new List<PartModel>();
         }
 
         public int Id { get; set; }
         public string Category { get; set; }
         public string ProductCode { get; set; }
         public string ImagePath { get; set; }
-        public IList<Part> Parts { get; set; }
+        public IList<PartModel> Parts { get; set; }
     }
 }

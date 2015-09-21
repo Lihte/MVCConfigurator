@@ -9,5 +9,7 @@ namespace MVCConfigurator.UI.Models
     public class ProductListViewModel
     {
         public IList<Product> Products { get; set; }
+
+        public IList<ProductViewModel> ProductViewModels { get; set; }
     }
 }

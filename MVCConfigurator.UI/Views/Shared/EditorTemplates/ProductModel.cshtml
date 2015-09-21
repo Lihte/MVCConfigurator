@@ -1,0 +1,6 @@
+﻿@model MVCConfigurator.UI.Models.ProductModel
+
+<div>
+    @Html.HiddenFor(m => m.Id)
+    <a href="@Url.Action("SelectParts", "Home", new { id = Model.Id })" ><img src="@Model.ImagePath", alt="@Model.Category .img" /></a>
+</div>

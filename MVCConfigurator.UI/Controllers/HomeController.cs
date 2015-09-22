@@ -171,6 +171,10 @@ namespace MVCConfigurator.UI.Controllers
                 }
             }
 
+            var sameCategory = product.Parts.Where(p => p.Category.Id == model.PartDetails.CategoryId).Select(p => p);
+
+            incompatibleParts.AddRange(sameCategory);
+
             var part = new Part()
             {
                 Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category },
@@ -268,6 +272,16 @@ namespace MVCConfigurator.UI.Controllers
         {
 
             return View("~/Views/User/SelectParts.cshtml");
+        }
+
+        [HttpGet]
+        public JsonResult GetIncompatibleParts(int productId, int partId)
+        {
+            var product = _productService.GetProduct(productId);
+
+            var ip = product.Parts.SingleOrDefault(p => p.Id == partId).IncompatibleParts.Select(p => p.Id);
+
+            return Json(new { ip = ip }, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

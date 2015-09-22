@@ -63,7 +63,7 @@ namespace MVCConfigurator.Domain.Services
             {
                 return new List<PartCategory>();
             }
-            return product.Parts.Select(p => p.Category).ToList();
+            return product.Parts.Select(p => p.Category).Distinct().ToList();
         }
 
         public IList<Part> IsCompatiable(IList<Part> selectedParts, IList<Part> partsToSelect)

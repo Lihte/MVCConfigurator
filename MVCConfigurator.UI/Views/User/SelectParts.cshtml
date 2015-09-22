@@ -4,7 +4,7 @@
     ViewBag.Title = "SelectParts";
 }
 
-<h2>SelectParts</h2>
+<h2>Select Parts</h2>
 
 @using (Html.BeginForm())
 {
@@ -12,39 +12,151 @@
     {
         if (i == 0)
         {
+
             <h3>@Model.Product.Parts[i].Category</h3>
-            <div style="display:inline-block; border:2px solid black;">
-                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
-                <br />
-                <span>@Model.Product.Parts[i].Name</span>
-            </div>
+    <div class="part" id="Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+        @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
+        <img src="@Model.Product.Parts[i].ImagePath" />
+        <br />
+        <span class="part-text">@Model.Product.Parts[i].Name</span>
+    </div>
+
         }
         else if (Model.Product.Parts[i].CategoryId == Model.Product.Parts[i - 1].CategoryId)
         {
-            <div style="display:inline-block; border:2px solid black;">
-                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
-                <br />
-                <span>@Model.Product.Parts[i].Name</span>
+            <div class="box">
+                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                    @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
+                    <img src="@Model.Product.Parts[i].ImagePath" />
+                    <br />
+                    <span class="part-text">@Model.Product.Parts[i].Name</span>
+                </div>
+                <div class="overlay @Model.Product.Parts[i].Id"></div>
             </div>
         }
         else
         {
             <br />
             <br />
-            <h3>@Model.Product.Parts[i].Category</h3>   
-            <div style="display:inline-block; border:2px solid black;">
-                <img src="@Model.Product.Parts[i].ImagePath" onclick="selectPart()" />
-                <br />
-                <span>@Model.Product.Parts[i].Name</span>
+            <h3>@Model.Product.Parts[i].Category</h3>
+            <div class="box">
+                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                    @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
+                    <img src="@Model.Product.Parts[i].ImagePath" />
+                    <br />
+                    <span class="part-text">@Model.Product.Parts[i].Name</span>
+                </div>
+                <div class="overlay @Model.Product.Parts[i].Id"></div>
             </div>
         }
     }
 }
 
+ @*onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)"*@
+
 
 <script type="text/javascript">
-    function selectPart() {
-        console.log("bitch");
+    //$(document).ready(function () {
+    //    $(".part").click(function () {
+    //        //if (!$(this).data("disabled"))
+
+    //        var productId = $(this).data("productId");
+    //        var partId = $(this).data("id");
+    //        var iterator = $(this).data("iterator");
+
+    //        var IsSelected = $("#Product_Parts_" + iterator + "__IsSelected").val();
+
+    //        if (IsSelected == "False") {
+    //            $("#Product_Parts_" + iterator + "__IsSelected").val("True");
+    //            console.log($("#Product_Parts_" + iterator + "__IsSelected").val());
+    //        }
+    //        else {
+    //            $("#Product_Parts_" + iterator + "__IsSelected").val("False");
+    //            console.log($("#Product_Parts_" + iterator + "__IsSelected").val());
+    //        }
+
+    //        GetIncompatibleParts(productId, partId);
+
+    //    });
+    //});
+
+    function selectPart(productId, partId, e) {
+        var IsSelected = $("#Product_Parts_" + e + "__IsSelected").val();
+
+        if (IsSelected == "False") {
+            $("#Product_Parts_" + e + "__IsSelected").val("True");
+            console.log($("#Product_Parts_" + e + "__IsSelected").val());
+        }
+        else {
+            $("#Product_Parts_" + e + "__IsSelected").val("False");
+            console.log($("#Product_Parts_" + e + "__IsSelected").val());
+        }
+
+        GetIncompatibleParts(productId, partId);
+    };
+
+    function GetIncompatibleParts(productId, partId) {
+        $.ajax({
+            type: "GET",
+            url: "@(Url.Action("GetIncompatibleParts", "Home"))",
+            data: { productId: productId, partId: partId },
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                for (var i in result.ip) {
+                    console.log(result.ip[i]);
+                    DimIncompatible(result.ip[i]);
+                }
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    };
+
+    function DimIncompatible(partId) {
+        if ($(".overlay." + partId).css('display') != 'none')
+            $(".overlay." + partId).hide();
+        else
+            $(".overlay." + partId).show();
     };
 
 </script>
+
+<style>
+    .part:hover {
+        border: 1px solid #C0C0C0;
+    }
+
+    .part {
+        border: 1px solid transparent;
+        text-align: center;
+        display: inline-block;
+        padding: 5px;
+    }
+
+        .part img {
+            display: block;
+        }
+
+    .part-text {
+        display: block;
+        font-weight: bold;
+    }
+
+    .overlay {
+        background: rgba(0,0,0,.50);
+        position: relative;
+        top: -150px;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+
+    .box {
+        position: static;
+        height: 150px;
+        display: inline-block;
+    }
+</style>

@@ -32,7 +32,7 @@ namespace MVCConfigurator.UI.Models
         {
             Id = product.Id;
             Category = product.Category.Name;
-            ImagePath = product.ImagePath;
+            Image.ImagePath = product.ImagePath;
             ProductCode = product.ProductCode;
             Parts = new List<PartModel>();
         }
@@ -40,7 +40,20 @@ namespace MVCConfigurator.UI.Models
         public int Id { get; set; }
         public string Category { get; set; }
         public string ProductCode { get; set; }
-        public string ImagePath { get; set; }
+        public Image Image { get; set; }
         public IList<PartModel> Parts { get; set; }
+    }
+    public class Image
+    {
+        public Image()
+        {
+
+        }
+        public Image(string imagePath)
+        {
+            ImagePath = imagePath;
+        }
+        public string ImagePath { get; set; }
+        public HttpPostedFileBase ImageUpload { get; set; }
     }
 }

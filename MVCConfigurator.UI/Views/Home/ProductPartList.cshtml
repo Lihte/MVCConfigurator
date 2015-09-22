@@ -25,7 +25,7 @@
                 <td>@item.Price</td>
                 <td>@item.LeadTime</td>
                 <td>@item.StockKeepingUnit</td>
-                <td>@item.ImagePath</td>
+                <td><img src="@Url.Content(item.Image.PartImagePath)" style="height:100px;" /></td>
                 <td></td>
             </tr>
         }

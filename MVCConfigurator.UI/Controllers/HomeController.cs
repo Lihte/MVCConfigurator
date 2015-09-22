@@ -5,6 +5,7 @@ using MVCConfigurator.UI.Security;
 using MVCConfigurator.UI.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -22,7 +23,8 @@ namespace MVCConfigurator.UI.Controllers
 
         public static User CurrentUser;
 
-        public HomeController(IUserService userService, IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
+        public HomeController(IUserService userService, 
+            IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _userService = userService;
             _productService = productService;
@@ -63,7 +65,8 @@ namespace MVCConfigurator.UI.Controllers
         public ActionResult CreateProduct()
         {
             var viewModel = new ProductViewModel();
-            viewModel.Categories = _productService.GetAllProductCategories().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
+            viewModel.Categories = _productService.GetAllProductCategories()
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name });
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
@@ -71,6 +74,9 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
+            var path = "";
+            var fullPath = "";
+
             var categories = _productService.GetAllProductCategories();
 
             if (categories.Any(c => c.Name == model.Product.Category))
@@ -78,12 +84,21 @@ namespace MVCConfigurator.UI.Controllers
                 return View("~/Views/Admin/CreateProduct.cshtml");
             }
 
+            if(model.Product.Image.ImageUpload.FileName!=null)
+            {
+                var fileName = Path.GetFileName(model.Product.Image.ImageUpload.FileName);
+                path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
+                model.Product.Image.ImageUpload.SaveAs(path);
+                fullPath = @"~/Content/Images/" + fileName;
+            }
+
             var product = new Product()
             {
                 Name = model.Product.Category,
                 Category = new ProductCategory { Name = model.Product.Category },
-                ImagePath = model.Product.ImagePath
+                ImagePath = fullPath
             };
+            
 
             product = _productService.AddProduct(product);
 
@@ -98,14 +113,27 @@ namespace MVCConfigurator.UI.Controllers
 
             return RedirectToAction("ProductList");
         }
+        //[HttpPost]
+        //public ActionResult Upload(HttpPostedFileBase photo)
+        //{
+        //    var path = "";
+        //    if(photo != null && photo.ContentLength > 0)
+        //    {
+        //        var fileName = Path.GetFileName(photo.FileName);
+        //        path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
+        //        photo.SaveAs(path);
+        //    }
 
+        //    return RedirectToAction("CreateProduct");
+        //}
         public ActionResult AddPart(int id)
         {
             var product = _productService.GetProduct(id);
 
             var viewModel = new PartViewModel()
             {
-                Categories = _productService.GetAllPartCategoriesByProduct(product).Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
+                Categories = _productService.GetAllPartCategoriesByProduct(product)
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name }),
                 ExistingParts = product.Parts.Select(p => new PartModel(p)).ToList(),
                 ProductId = id
             };
@@ -116,11 +144,21 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult AddPart(PartViewModel model)
         {
+            var path="";
+            var fullPath= "";
             var product = _productService.GetProduct(model.ProductId);
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
             var incompatibleParts = new List<Part>();
+
+            if(model.PartDetails.Image.PartImageUpload.FileName!=null)
+            {
+                var fileName = Path.GetFileName(model.PartDetails.Image.PartImageUpload.FileName);
+                path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
+                model.PartDetails.Image.PartImageUpload.SaveAs(path);
+                fullPath = @"~/Content/Images/" + fileName;
+            }
 
             if (model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
@@ -136,7 +174,7 @@ namespace MVCConfigurator.UI.Controllers
             var part = new Part()
             {
                 Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category },
-                ImagePath = model.PartDetails.ImagePath,
+                ImagePath = model.PartDetails.Image.PartImagePath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,
                 Price = model.PartDetails.Price,
@@ -159,7 +197,7 @@ namespace MVCConfigurator.UI.Controllers
                     Id = id,
                     Category = product.Name,
                     Parts = product.Parts.Select(p => new PartModel(p)).ToList(),
-                    ImagePath = product.ImagePath,
+                    Image = new Image(product.ImagePath),
                     ProductCode = product.ProductCode
                 },
             };
@@ -304,7 +342,8 @@ namespace MVCConfigurator.UI.Controllers
                 Phone = viewModel.UserDetails.Phone
             };
 
-            var response = _userService.RegisterUser(viewModel.Username, viewModel.Password, viewModel.ConfirmPassword, userDetails);
+            var response = _userService.RegisterUser(viewModel.Username, 
+                viewModel.Password, viewModel.ConfirmPassword, userDetails);
 
             if (response.Success)
             {
@@ -343,7 +382,8 @@ namespace MVCConfigurator.UI.Controllers
 
         protected override void OnAuthentication(AuthenticationContext filterContext)
         {
-            if (filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
+            if (filterContext.HttpContext.User != null && filterContext
+                .HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
             {
                 _authenticationService.AuthenticateRequest(filterContext.HttpContext);
             }

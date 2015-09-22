@@ -29,7 +29,7 @@ namespace MVCConfigurator.UI.Models
             Price = part.Price;
             LeadTime = part.LeadTime;
             StockKeepingUnit = part.StockKeepingUnit;
-            ImagePath = part.ImagePath;
+            Image = part.ImagePath != null ? new PartImage(part.ImagePath):new PartImage();
             CategoryId = part.Category.Id;
             Category = part.Category.Name;
 
@@ -42,10 +42,24 @@ namespace MVCConfigurator.UI.Models
         public decimal Price { get; set; }
         public int LeadTime { get; set; }
         public string StockKeepingUnit { get; set; }
-        public string ImagePath { get; set; }
+        public PartImage Image { get; set; }
+        //public string ImagePath { get; set; }
         public int CategoryId { get; set; }
         public string Category { get; set; }
         public bool IsIncompatible { get; set; }
         public bool IsSelected { get; set; }
+    }
+    public class PartImage
+    {
+        public PartImage()
+        {
+            
+        }
+        public PartImage(string imagePath)
+        {
+            PartImagePath = imagePath;
+        }
+        public string PartImagePath { get; set; }
+        public HttpPostedFileBase PartImageUpload { get; set; }
     }
 }

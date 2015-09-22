@@ -55,12 +55,15 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.PartDetails.ImagePath, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Image, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(m => m.PartDetails.ImagePath)
-                @Html.ValidationMessageFor(m => m.PartDetails.ImagePath)
+                @Html.TextBoxFor(model => model.PartDetails.Image.PartImageUpload, new { type="file" })
+                @Html.ValidationMessageFor(m => m.PartDetails.Image.PartImageUpload)
             </div>
         </div>
+        <br />
+        <input type="submit" value="Add Part" class="btn btn-default" />
+        
     </div>
     <hr />
     <table class="table table-condensed">
@@ -86,14 +89,13 @@
                     <td>@Model.ExistingParts[i].Price</td>
                     <td>@Model.ExistingParts[i].LeadTime</td>
                     <td>@Model.ExistingParts[i].StockKeepingUnit</td>
-                    <td>@Model.ExistingParts[i].ImagePath</td>
+                    <td>@Model.ExistingParts[i].Image.PartImagePath</td>
                     <td>@Html.CheckBoxFor(m => m.ExistingParts[i].IsIncompatible)</td>
                 </tr>
             }
         </tbody>
     </table>
-    <br />
-    <input type="submit" value="Add Part" class="btn btn-default" />
+    
 }
 
 

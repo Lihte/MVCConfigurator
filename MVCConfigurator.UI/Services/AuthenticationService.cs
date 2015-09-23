@@ -90,14 +90,19 @@ namespace MVCConfigurator.UI.Services
 
         public void ResetPassword(string username)
         {
-            var user = _userService.Get(username);
+            //var user = _userService.Get(username);
+            if(_userService.Get(username).Entity!=null)
+            {
+                var user = _userService.Get(username);
+                user.Entity.RequestPasswordToken = Guid.NewGuid();
 
-            user.Entity.RequestPasswordToken = Guid.NewGuid();
+                var resetPasswordLink = "/Home/CreateNewPassword?token="+user.Entity.RequestPasswordToken.ToString();
+                _messageService.SendMail("Reset password request", resetPasswordLink, user.Entity.UserName);
 
-            var resetPasswordLink = "/Home/CreateNewPassword?token="+user.Entity.RequestPasswordToken.ToString();
-            _messageService.SendMail("Reset password request", resetPasswordLink, user.Entity.UserName);
+                _userService.UpdateUser(user.Entity);
+            }
 
-            _userService.UpdateUser(user.Entity);
+            
         }
     }
 }

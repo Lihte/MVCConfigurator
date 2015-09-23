@@ -15,20 +15,20 @@
 
             <h3>@Model.Product.Parts[i].Category</h3>
             <div class="box">
-                <div class="part" id="Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
                     <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>
                 <div class="overlay @Model.Product.Parts[i].Id"></div>
-            </div>
+            </div>  
 
         }
         else if (Model.Product.Parts[i].CategoryId == Model.Product.Parts[i - 1].CategoryId)
         {
             <div class="box">
-                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
                     <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
                     <br />
@@ -43,7 +43,7 @@
             <br />
             <h3>@Model.Product.Parts[i].Category</h3>
             <div class="box">
-                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
                     <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
                     <br />
@@ -86,21 +86,67 @@
     //});
 
     function selectPart(productId, partId, e) {
+
         var IsSelected = $("#Product_Parts_" + e + "__IsSelected").val();
 
         if (IsSelected == "False") {
             $("#Product_Parts_" + e + "__IsSelected").val("True");
             console.log($("#Product_Parts_" + e + "__IsSelected").val());
+
+            ShowAllParts();
+
+            $('#' + partId).attr("locked", 1);
+
+            $('[locked="1"]').each(function () {
+                HideIncompatible(productId, $(this).data("id"));
+            });
+            //HideIncompatible(productId, partId);
         }
         else {
             $("#Product_Parts_" + e + "__IsSelected").val("False");
             console.log($("#Product_Parts_" + e + "__IsSelected").val());
+
+            ShowAllParts();
+
+            $('#' + partId).attr("locked", 0);
+            
+            var obj = $('[locked="1"]');
+
+
+            $('[locked="1"]').each(function () {
+                HideIncompatible(productId, $(this).data("id"));
+            });
+
+            //ShowIncompatible(productId, partId);
         }
 
-        GetIncompatibleParts(productId, partId);
+        //ShowAllParts(productId);
+
+        //var IsSelected = $("#Product_Parts_" + e + "__IsSelected").val();
+
+        //if (IsSelected == "False") {
+        //    $("#Product_Parts_" + e + "__IsSelected").val("True");
+        //    console.log($("#Product_Parts_" + e + "__IsSelected").val());
+        //    HideIncompatible(productId, partId);
+        //}
+        //else {
+        //    $("#Product_Parts_" + e + "__IsSelected").val("False");
+        //    console.log($("#Product_Parts_" + e + "__IsSelected").val());
+        //    ShowIncompatible(productId, partId);
+        //}
     };
 
-    function GetIncompatibleParts(productId, partId) {
+    function ShowAllParts() {
+        $('.part').each(function () {
+            //console.log($(this).data("id"));
+            //console.log(productId);
+            $(".overlay." + $(this).data("id")).hide();
+
+            //HideIncompatible($(this).data("productId"), $(this).data("id"));
+        })
+    }
+
+    function HideIncompatible(productId, partId) {
         $.ajax({
             type: "GET",
             url: "@(Url.Action("GetIncompatibleParts", "Home"))",
@@ -109,8 +155,7 @@
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 for (var i in result.ip) {
-                    console.log(result.ip[i]);
-                    DimIncompatible(result.ip[i]);
+                    $(".overlay." + result.ip[i]).show();
                 }
             },
             error: function (response) {
@@ -119,12 +164,23 @@
         });
     };
 
-    function DimIncompatible(partId) {
-        if ($(".overlay." + partId).css('display') != 'none')
-            $(".overlay." + partId).hide();
-        else
-            $(".overlay." + partId).show();
-    };
+    @*function ShowIncompatible(productId, partId) {
+        $.ajax({
+            type: "GET",
+            url: "@(Url.Action("GetIncompatibleParts", "Home"))",
+            data: { productId: productId, partId: partId },
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                for (var i in result.ip) {
+                    $(".overlay." + result.ip[i]).hide();
+                }
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    };*@
 
 </script>
 

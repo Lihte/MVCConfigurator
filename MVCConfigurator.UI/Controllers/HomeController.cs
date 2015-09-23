@@ -230,9 +230,17 @@ namespace MVCConfigurator.UI.Controllers
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
-
-
             var incompatibleParts = new List<Part>();
+
+            //var f  = product.Parts.Select(x => new { id = x.Id, ip = x.IncompatibleParts.Select(y => y.Id) });
+            //var dict = new Dictionary<int, int>();
+            //foreach (var e in f)
+            //{
+            //    foreach(var c in e.ip)
+            //    {
+            //        dict.Add(e.id, c);
+            //    }
+            //}
 
             if (model.PartDetails.Image.PartImageUpload.FileName != null)
             {
@@ -255,8 +263,6 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = product.Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
 
-            //part.IncompatibleParts = new List<Part>();
-
             _productService.UpdateProduct(product, part);
 
             var sameCategory = product.Parts.Where(p => (p.Category.Id == part.Category.Id) && (p.Id != part.Id)).Select(p => p);
@@ -270,13 +276,12 @@ namespace MVCConfigurator.UI.Controllers
             part.StockKeepingUnit = model.PartDetails.StockKeepingUnit;
             part.IncompatibleParts = incompatibleParts;
 
-            //product.Parts.Add(part);
-            _productService.UpdateProduct(product);
-
-            foreach(var p in part.IncompatibleParts)
+            foreach (var p in part.IncompatibleParts)
             {
                 p.IncompatibleParts.Add(part);
             }
+
+            _productService.UpdateProduct(product);
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }

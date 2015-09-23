@@ -202,6 +202,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\EditorTemplates\ProductModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Image.cshtml" />
+    <Content Include="Views\Home\EditPart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -24,7 +24,7 @@ namespace MVCConfigurator.UI.Controllers
 
         public static User CurrentUser;
 
-        public HomeController(IUserService userService,
+        public HomeController(IUserService userService, 
             IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _userService = userService;
@@ -71,7 +71,7 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
-
+        
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
@@ -99,7 +99,7 @@ namespace MVCConfigurator.UI.Controllers
                 Category = new ProductCategory { Name = model.Product.Category },
                 ImagePath = fullPath
             };
-
+            
 
             product = _productService.AddProduct(product);
 
@@ -231,7 +231,17 @@ namespace MVCConfigurator.UI.Controllers
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
+            var incompatibleParts = new List<Part>();
 
+            //var f  = product.Parts.Select(x => new { id = x.Id, ip = x.IncompatibleParts.Select(y => y.Id) });
+            //var dict = new Dictionary<int, int>();
+            //foreach (var e in f)
+            //{
+            //    foreach(var c in e.ip)
+            //    {
+            //        dict.Add(e.id, c);
+            //    }
+            //}
 
             var incompatibleParts = new List<Part>();
 
@@ -256,8 +266,6 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = product.Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
 
-            //part.IncompatibleParts = new List<Part>();
-
             _productService.UpdateProduct(product, part);
 
             var sameCategory = product.Parts.Where(p => (p.Category.Id == part.Category.Id) && (p.Id != part.Id)).Select(p => p);
@@ -271,13 +279,12 @@ namespace MVCConfigurator.UI.Controllers
             part.StockKeepingUnit = model.PartDetails.StockKeepingUnit;
             part.IncompatibleParts = incompatibleParts;
 
-            //product.Parts.Add(part);
-            _productService.UpdateProduct(product);
-
-            foreach(var p in part.IncompatibleParts)
+            foreach (var p in part.IncompatibleParts)
             {
                 p.IncompatibleParts.Add(part);
             }
+
+            _productService.UpdateProduct(product);
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }
@@ -327,8 +334,8 @@ namespace MVCConfigurator.UI.Controllers
                 Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = customer.Entity
             };
-
-            return View("~/Views/Admin/CustomerDetails.cshtml", model);
+            
+                return View("~/Views/Admin/CustomerDetails.cshtml", model);
         }
         [HttpPost]
         public ActionResult CustomerDetails(CustomerDetailsViewModel model)
@@ -420,7 +427,7 @@ namespace MVCConfigurator.UI.Controllers
                 Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = CurrentUser
             };
-
+            
             return View("~/Views/User/OrderList.cshtml", model);
         }
         [Authorize]
@@ -477,7 +484,7 @@ namespace MVCConfigurator.UI.Controllers
                 Phone = viewModel.UserDetails.Phone
             };
 
-            var response = _userService.RegisterUser(viewModel.Username,
+            var response = _userService.RegisterUser(viewModel.Username, 
                 viewModel.Password, viewModel.ConfirmPassword, userDetails);
 
             if(response.Success)
@@ -498,7 +505,7 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult ResetPassword(UserViewModel user)
         {
-
+            
             _authenticationService.ResetPassword(user.Username);
 
             return RedirectToAction("Index");

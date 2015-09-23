@@ -32,7 +32,7 @@ namespace MVCConfigurator.UI.Models
         {
             Id = product.Id;
             Category = product.Category.Name;
-            Image.ImagePath = product.ImagePath;
+            Image = new Image(product.ImagePath);
             ProductCode = product.ProductCode;
             Parts = new List<PartModel>();
         }

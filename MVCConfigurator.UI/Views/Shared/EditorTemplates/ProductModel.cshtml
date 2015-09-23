@@ -2,5 +2,5 @@
 
 <div>
     @Html.HiddenFor(m => m.Id)
-    <a href="@Url.Action("SelectParts", "Home", new { id = Model.Id })" ><img src="@Url.Content(@Model.ImagePath)" alt="@Model.Category .img" /></a>
+    <a href="@Url.Action("SelectParts", "Home", new { id = Model.Id })" ><img src="@Url.Content(@Model.Image.ImagePath)" alt="@Model.Category .img" /></a>
 </div>

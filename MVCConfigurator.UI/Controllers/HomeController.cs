@@ -191,6 +191,74 @@ namespace MVCConfigurator.UI.Controllers
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }
+
+        public ActionResult EditPart(int productId, int partId)
+        {
+            var product = _productService.GetProduct(productId);
+            var part = product.Parts.SingleOrDefault(p => p.Id == partId);
+
+            var viewModel = new PartViewModel()
+            {
+                Categories = _productService.GetAllPartCategoriesByProduct(product)
+                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name, Selected = (c.Id == part.Category.Id) }),
+                ExistingParts = product.Parts.Select(p => new PartModel(p) { IsIncompatible = part.IncompatibleParts.Contains(p) }).ToList(),
+                ProductId = productId,
+                PartDetails = new PartModel(part)
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditPart(PartViewModel model)
+        {
+            var path = "";
+            var fullPath = "";
+            var product = _productService.GetProduct(model.ProductId);
+
+            var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
+
+            var incompatibleParts = new List<Part>();
+
+            if (model.PartDetails.Image.PartImageUpload.FileName != null)
+            {
+                var fileName = Path.GetFileName(model.PartDetails.Image.PartImageUpload.FileName);
+                path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
+                model.PartDetails.Image.PartImageUpload.SaveAs(path);
+                fullPath = @"~/Content/Images/" + fileName;
+            }
+
+            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
+            {
+                foreach (var item in model.ExistingParts)
+                {
+                    if (item.IsIncompatible)
+                    {
+                        incompatibleParts.Add(product.Parts.First(p => p.Id == item.Id));
+                    }
+                }
+            }
+
+            var sameCategory = product.Parts.Where(p => p.Category.Id == model.PartDetails.CategoryId).Select(p => p);
+
+            incompatibleParts.AddRange(sameCategory);
+
+            var part = _productService.GetProduct(model.ProductId).Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
+
+            part.Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category };
+            part.ImagePath = model.PartDetails.Image.PartImagePath;
+            part.LeadTime = model.PartDetails.LeadTime;
+            part.Name = model.PartDetails.Name;
+            part.Price = model.PartDetails.Price;
+            part.StockKeepingUnit = model.PartDetails.StockKeepingUnit;
+            part.IncompatibleParts = incompatibleParts;
+
+            product.Parts.Add(part);
+            _productService.UpdateProduct(product);
+
+            return RedirectToAction("ProductPartList", new { id = product.Id });
+        }
+
         public ActionResult ProductPartList(int id)
         {
             var product = _productService.GetProduct(id);

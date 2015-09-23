@@ -26,7 +26,7 @@
                 <td>@item.LeadTime</td>
                 <td>@item.StockKeepingUnit</td>
                 <td><img src="@Url.Content(item.Image.PartImagePath)" style="height:100px;" /></td>
-                <td></td>
+                <td>@Html.ActionLink("Edit Part", "EditPart", new { productId = Model.Product.Id, partId = item.Id })</td>
             </tr>
         }
 

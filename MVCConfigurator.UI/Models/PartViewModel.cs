@@ -1,6 +1,7 @@
 ﻿using MVCConfigurator.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -58,8 +59,11 @@ namespace MVCConfigurator.UI.Models
         public PartImage(string imagePath)
         {
             PartImagePath = imagePath;
+
         }
         public string PartImagePath { get; set; }
+
+        [Required]
         public HttpPostedFileBase PartImageUpload { get; set; }
     }
 }

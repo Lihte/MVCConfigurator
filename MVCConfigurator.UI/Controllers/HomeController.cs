@@ -189,6 +189,20 @@ namespace MVCConfigurator.UI.Controllers
             product.Parts.Add(part);
             _productService.UpdateProduct(product);
 
+            part = _productService.GetProduct(model.ProductId).Parts.LastOrDefault();
+
+            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
+            {
+                foreach (var item in model.ExistingParts)
+                {
+                    if (item.IsIncompatible)
+                    {
+                        var partUpdate = product.Parts.SingleOrDefault(p => p.Id == item.Id);
+                        partUpdate.IncompatibleParts.Add(part);
+                    }
+                }
+            }
+
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }
 
@@ -199,9 +213,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var viewModel = new PartViewModel()
             {
-                Categories = _productService.GetAllPartCategoriesByProduct(product)
-                .Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name, Selected = (c.Id == part.Category.Id) }),
-                ExistingParts = product.Parts.Select(p => new PartModel(p) { IsIncompatible = part.IncompatibleParts.Contains(p) }).ToList(),
+                ExistingParts = product.Parts.Where(p => p.Id != part.Id).Select(p => new PartModel(p) { IsIncompatible = part.IncompatibleParts.Contains(p) }).ToList(),
                 ProductId = productId,
                 PartDetails = new PartModel(part)
             };
@@ -217,6 +229,8 @@ namespace MVCConfigurator.UI.Controllers
             var product = _productService.GetProduct(model.ProductId);
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
+
+
 
             var incompatibleParts = new List<Part>();
 
@@ -239,22 +253,30 @@ namespace MVCConfigurator.UI.Controllers
                 }
             }
 
-            var sameCategory = product.Parts.Where(p => p.Category.Id == model.PartDetails.CategoryId).Select(p => p);
+            var part = product.Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
+
+            part.IncompatibleParts = new List<Part>();
+
+            _productService.UpdateProduct(product);
+
+            var sameCategory = product.Parts.Where(p => (p.Category.Id == part.Category.Id) && (p.Id != part.Id)).Select(p => p);
 
             incompatibleParts.AddRange(sameCategory);
 
-            var part = _productService.GetProduct(model.ProductId).Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
-
-            part.Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category };
-            part.ImagePath = model.PartDetails.Image.PartImagePath;
+            part.ImagePath = fullPath;
             part.LeadTime = model.PartDetails.LeadTime;
             part.Name = model.PartDetails.Name;
             part.Price = model.PartDetails.Price;
             part.StockKeepingUnit = model.PartDetails.StockKeepingUnit;
             part.IncompatibleParts = incompatibleParts;
 
-            product.Parts.Add(part);
+            //product.Parts.Add(part);
             _productService.UpdateProduct(product);
+
+            foreach(var p in part.IncompatibleParts)
+            {
+                p.IncompatibleParts.Add(part);
+            }
 
             return RedirectToAction("ProductPartList", new { id = product.Id });
         }

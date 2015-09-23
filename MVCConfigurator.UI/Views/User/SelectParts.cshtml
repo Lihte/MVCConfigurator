@@ -14,17 +14,18 @@
         {
 
             <h3>@Model.Product.Parts[i].Category</h3>
-    <div class="box">
-        <div class="part" id="Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
-            @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-            <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
-            <br />
-            <span class="part-text">@Model.Product.Parts[i].Name</span>
-        </div>
-    </div>
+            <div class="box">
+                <div class="part" id="Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
+                    @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
+                    <br />
+                    <span class="part-text">@Model.Product.Parts[i].Name</span>
+                </div>
+                <div class="overlay @Model.Product.Parts[i].Id"></div>
+            </div>
 
         }
-        else if(Model.Product.Parts[i].CategoryId == Model.Product.Parts[i - 1].CategoryId)
+        else if (Model.Product.Parts[i].CategoryId == Model.Product.Parts[i - 1].CategoryId)
         {
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
@@ -52,9 +53,11 @@
             </div>
         }
     }
+
+    <input type="submit" value="Confirm Selected Parts" />
 }
 
- @*onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)"*@
+@*onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)"*@
 
 
 <script type="text/javascript">

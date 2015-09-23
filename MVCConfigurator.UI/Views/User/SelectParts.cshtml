@@ -16,7 +16,7 @@
             <h3>@Model.Product.Parts[i].Category</h3>
     <div class="part" id="Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
         @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-        <img src="@Model.Product.Parts[i].Image.PartImagePath" />
+        <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
         <br />
         <span class="part-text">@Model.Product.Parts[i].Name</span>
     </div>
@@ -27,7 +27,7 @@
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-                    <img src="@Model.Product.Parts[i].Image.PartImagePath" />
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>
@@ -42,7 +42,7 @@
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-productid="@Model.Product.Id" data-iterator="@i" data-disabled="" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-                    <img src="@Model.Product.Parts[i].Image.PartImagePath" />
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>

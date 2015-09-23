@@ -178,7 +178,7 @@ namespace MVCConfigurator.UI.Controllers
             var part = new Part()
             {
                 Category = partCategory != null ? partCategory.Category : new PartCategory { Name = model.PartDetails.Category },
-                ImagePath = model.PartDetails.Image.PartImagePath,
+                ImagePath = fullPath,
                 LeadTime = model.PartDetails.LeadTime,
                 Name = model.PartDetails.Name,
                 Price = model.PartDetails.Price,
@@ -445,6 +445,7 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult ResetPassword(UserViewModel user)
         {
+            
             _authenticationService.ResetPassword(user.Username);
 
             return RedirectToAction("Index");

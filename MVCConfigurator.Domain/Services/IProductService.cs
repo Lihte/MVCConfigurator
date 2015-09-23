@@ -14,6 +14,7 @@ namespace MVCConfigurator.Domain.Services
         IList<Product> GetAllProducts();
         IList<Product> GetProductsByCategory(ProductCategory category);
         bool UpdateProduct(Product product);
+        bool UpdateProduct(Product product, Part part);
         bool DeleteProduct(Product product);
         IList<Part> DisplayPartsByCategory(Product product, PartCategory category);
         IList<ProductCategory> GetAllProductCategories();

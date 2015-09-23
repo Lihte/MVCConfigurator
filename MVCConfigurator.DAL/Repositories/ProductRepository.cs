@@ -64,6 +64,21 @@ namespace MVCConfigurator.DAL.Repositories
             return false;
         }
 
+        public bool UpdateProduct(Product product, Part part)
+        {
+            var prod = _context.Products.FirstOrDefault(x => x.Id == product.Id);
+
+            if (prod != null)
+            {
+                prod.Parts.SingleOrDefault(p => p.Id == part.Id).IncompatibleParts.Clear();
+
+                prod = product;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
         public IEnumerable<ProductCategory> GetAllProductCategories()
         {
             return _context.ProductCategories;

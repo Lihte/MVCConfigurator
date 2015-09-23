@@ -42,6 +42,11 @@ namespace MVCConfigurator.Domain.Services
             return _repository.UpdateProduct(product);
         }
 
+        public bool UpdateProduct(Product product, Part part)
+        {
+            return _repository.UpdateProduct(product, part);
+        }
+
         public bool DeleteProduct(Product product)
         {
             return _repository.DeleteProduct(product);

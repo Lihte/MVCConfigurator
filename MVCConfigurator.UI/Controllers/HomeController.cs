@@ -255,9 +255,9 @@ namespace MVCConfigurator.UI.Controllers
 
             var part = product.Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
 
-            part.IncompatibleParts = new List<Part>();
+            //part.IncompatibleParts = new List<Part>();
 
-            _productService.UpdateProduct(product);
+            _productService.UpdateProduct(product, part);
 
             var sameCategory = product.Parts.Where(p => (p.Category.Id == part.Category.Id) && (p.Id != part.Id)).Select(p => p);
 

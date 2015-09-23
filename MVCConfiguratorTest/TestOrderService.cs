@@ -9,7 +9,6 @@ namespace MVCConfiguratorTest
     [TestClass]
     public class TestOrderService
     {
-        IOrderService _service = new OrderService(new FakeOrderRepository());
 
         [TestMethod]
         public void AssertThatGetAllOrdersDoesNotReturnNullList()

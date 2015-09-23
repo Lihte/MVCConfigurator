@@ -58,6 +58,7 @@ namespace MVCConfigurator.UI.Models
         public PartImage(string imagePath)
         {
             PartImagePath = imagePath;
+
         }
         public string PartImagePath { get; set; }
         public HttpPostedFileBase PartImageUpload { get; set; }

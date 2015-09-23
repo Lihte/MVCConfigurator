@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
@@ -23,7 +24,7 @@ namespace MVCConfigurator.UI.Controllers
 
         public static User CurrentUser;
 
-        public HomeController(IUserService userService, 
+        public HomeController(IUserService userService,
             IProductService productService, IAuthenticationService authenticationService, IOrderService orderService)
         {
             _userService = userService;
@@ -42,13 +43,13 @@ namespace MVCConfigurator.UI.Controllers
         {
             var login = _userService.Login(viewModel.Username, viewModel.Password);
 
-            if (login.Success)
+            if(login.Success)
             {
                 _authenticationService.LoginUser(login.Entity, HttpContext, false);
 
                 CurrentUser = HttpContext.User as User;
 
-                if (login.Entity.IsAdmin)
+                if(login.Entity.IsAdmin)
                 {
                     return RedirectToAction("Admin");
                 }
@@ -70,7 +71,7 @@ namespace MVCConfigurator.UI.Controllers
 
             return View("~/Views/Admin/CreateProduct.cshtml", viewModel);
         }
-        
+
         [HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
@@ -79,7 +80,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var categories = _productService.GetAllProductCategories();
 
-            if (categories.Any(c => c.Name == model.Product.Category))
+            if(categories.Any(c => c.Name == model.Product.Category))
             {
                 return View("~/Views/Admin/CreateProduct.cshtml");
             }
@@ -98,7 +99,7 @@ namespace MVCConfigurator.UI.Controllers
                 Category = new ProductCategory { Name = model.Product.Category },
                 ImagePath = fullPath
             };
-            
+
 
             product = _productService.AddProduct(product);
 
@@ -145,14 +146,14 @@ namespace MVCConfigurator.UI.Controllers
         public ActionResult AddPart(PartViewModel model)
         {
             var path="";
-            var fullPath= "";
+            var fullPath= "N/A";
             var product = _productService.GetProduct(model.ProductId);
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
             var incompatibleParts = new List<Part>();
 
-            if(model.PartDetails.Image.PartImageUpload.FileName!=null)
+            if(model.PartDetails.Image.PartImageUpload !=null)
             {
                 var fileName = Path.GetFileName(model.PartDetails.Image.PartImageUpload.FileName);
                 path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
@@ -160,11 +161,11 @@ namespace MVCConfigurator.UI.Controllers
                 fullPath = @"~/Content/Images/" + fileName;
             }
 
-            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
+            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
-                foreach (var item in model.ExistingParts)
+                foreach(var item in model.ExistingParts)
                 {
-                    if (item.IsIncompatible)
+                    if(item.IsIncompatible)
                     {
                         incompatibleParts.Add(product.Parts.First(p => p.Id == item.Id));
                     }
@@ -191,11 +192,11 @@ namespace MVCConfigurator.UI.Controllers
 
             part = _productService.GetProduct(model.ProductId).Parts.LastOrDefault();
 
-            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
+            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
-                foreach (var item in model.ExistingParts)
+                foreach(var item in model.ExistingParts)
                 {
-                    if (item.IsIncompatible)
+                    if(item.IsIncompatible)
                     {
                         var partUpdate = product.Parts.SingleOrDefault(p => p.Id == item.Id);
                         partUpdate.IncompatibleParts.Add(part);
@@ -225,7 +226,7 @@ namespace MVCConfigurator.UI.Controllers
         public ActionResult EditPart(PartViewModel model)
         {
             var path = "";
-            var fullPath = "";
+            var fullPath = "N/A";
             var product = _productService.GetProduct(model.ProductId);
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
@@ -234,7 +235,7 @@ namespace MVCConfigurator.UI.Controllers
 
             var incompatibleParts = new List<Part>();
 
-            if (model.PartDetails.Image.PartImageUpload.FileName != null)
+            if(model.PartDetails.Image.PartImageUpload != null)
             {
                 var fileName = Path.GetFileName(model.PartDetails.Image.PartImageUpload.FileName);
                 path = Url.Content(Path.Combine(Server.MapPath("~/Content/Images"), fileName));
@@ -242,11 +243,11 @@ namespace MVCConfigurator.UI.Controllers
                 fullPath = @"~/Content/Images/" + fileName;
             }
 
-            if (model.ExistingParts != null && model.ExistingParts.Count > 0)
+            if(model.ExistingParts != null && model.ExistingParts.Count > 0)
             {
-                foreach (var item in model.ExistingParts)
+                foreach(var item in model.ExistingParts)
                 {
-                    if (item.IsIncompatible)
+                    if(item.IsIncompatible)
                     {
                         incompatibleParts.Add(product.Parts.First(p => p.Id == item.Id));
                     }
@@ -326,13 +327,13 @@ namespace MVCConfigurator.UI.Controllers
                 Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = customer.Entity
             };
-            
-                return View("~/Views/Admin/CustomerDetails.cshtml", model);
+
+            return View("~/Views/Admin/CustomerDetails.cshtml", model);
         }
         [HttpPost]
         public ActionResult CustomerDetails(CustomerDetailsViewModel model)
         {
-            foreach (var item in model.Orders)
+            foreach(var item in model.Orders)
             {
                 var order = _orderService.GetOrderById(item.Id);
                 order.IsReady = item.IsReady;
@@ -360,6 +361,36 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult SelectParts(CustomizeProductViewModel viewModel)
         {
+            var selectedPartList = viewModel.Product.Parts.Where(p => p.IsSelected == true).ToList();
+
+            if(selectedPartList!=null)
+            {
+                var deliveryDate = DateTime.Now.AddDays(selectedPartList.OrderByDescending(d => d.LeadTime).First().LeadTime);
+                
+                int productId = viewModel.Product.Id;
+                StringBuilder productCode = new StringBuilder();
+                decimal productPrice = 0;
+                bool isReady = false;
+                var userID = _userService.Get(HttpContext.User.Identity.Name).Entity;
+
+                foreach(var part in selectedPartList)
+                {
+                    productPrice += part.Price;
+                    isReady = deliveryDate > DateTime.Now ? false : true;
+                    productCode.Append(part.StockKeepingUnit.Substring(0,2));
+                }
+
+                var order = new Order {
+                    Product = _productService.GetProduct(viewModel.Product.Id),
+                    DeliveryDate = deliveryDate, 
+                    IsReady = isReady, 
+                    Price = productPrice, 
+                    ProductId = productId, 
+                    User = userID };
+
+                _orderService.AddOrder(order);
+                
+            }
 
             return View("~/Views/User/SelectParts.cshtml");
         }
@@ -389,15 +420,15 @@ namespace MVCConfigurator.UI.Controllers
                 Orders = orders.Select(o => new OrderModel { Id = o.Id, DeliveryDate = o.DeliveryDate, IsReady = o.IsReady }).ToList(),
                 Customer = CurrentUser
             };
-            
-            return View("~/Views/User/OrderList.cshtml",model);
+
+            return View("~/Views/User/OrderList.cshtml", model);
         }
         [Authorize]
         public ActionResult ConfigureProduct()
         {
             var viewModel = new CustomizeProductViewModel { Products = _productService.GetAllProducts().Select(p => new ProductViewModel(p)).ToList() };
 
-            return View("~/Views/User/ConfigureProduct.cshtml",viewModel);
+            return View("~/Views/User/ConfigureProduct.cshtml", viewModel);
         }
 
         [Authorize]
@@ -410,7 +441,7 @@ namespace MVCConfigurator.UI.Controllers
 
         public ActionResult ProductList()
         {
-            if (CurrentUser.IsAdmin)
+            if(CurrentUser.IsAdmin)
             {
                 var viewModel = new ProductListViewModel
                 {
@@ -446,10 +477,10 @@ namespace MVCConfigurator.UI.Controllers
                 Phone = viewModel.UserDetails.Phone
             };
 
-            var response = _userService.RegisterUser(viewModel.Username, 
+            var response = _userService.RegisterUser(viewModel.Username,
                 viewModel.Password, viewModel.ConfirmPassword, userDetails);
 
-            if (response.Success)
+            if(response.Success)
             {
                 return RedirectToAction("Index");
             }
@@ -467,7 +498,7 @@ namespace MVCConfigurator.UI.Controllers
         [HttpPost]
         public ActionResult ResetPassword(UserViewModel user)
         {
-            
+
             _authenticationService.ResetPassword(user.Username);
 
             return RedirectToAction("Index");
@@ -487,7 +518,7 @@ namespace MVCConfigurator.UI.Controllers
 
         protected override void OnAuthentication(AuthenticationContext filterContext)
         {
-            if (filterContext.HttpContext.User != null && filterContext
+            if(filterContext.HttpContext.User != null && filterContext
                 .HttpContext.User.Identity.AuthenticationType == AuthenticationMode.Forms.ToString())
             {
                 _authenticationService.AuthenticateRequest(filterContext.HttpContext);

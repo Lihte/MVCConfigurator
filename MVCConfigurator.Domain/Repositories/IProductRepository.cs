@@ -14,6 +14,7 @@ namespace MVCConfigurator.Domain.Repositories
         IList<Product> GetAllProducts();
         IList<Product> GetProductsByCategory(ProductCategory category);
         bool UpdateProduct(Product product);
+        bool UpdateProduct(Product product, Part part);
         bool DeleteProduct(Product product);
 
         IEnumerable<ProductCategory> GetAllProductCategories();

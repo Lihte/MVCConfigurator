@@ -230,6 +230,8 @@ namespace MVCConfigurator.UI.Controllers
 
             var partCategory = product.Parts.FirstOrDefault(p => p.Category.Id == model.PartDetails.CategoryId);
 
+
+
             var incompatibleParts = new List<Part>();
 
             if (model.PartDetails.Image.PartImageUpload.FileName != null)
@@ -252,6 +254,10 @@ namespace MVCConfigurator.UI.Controllers
             }
 
             var part = product.Parts.SingleOrDefault(m => m.Id == model.PartDetails.Id);
+
+            part.IncompatibleParts = new List<Part>();
+
+            _productService.UpdateProduct(product);
 
             var sameCategory = product.Parts.Where(p => (p.Category.Id == part.Category.Id) && (p.Id != part.Id)).Select(p => p);
 

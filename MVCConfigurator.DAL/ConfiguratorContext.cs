@@ -16,8 +16,17 @@ namespace MVCConfigurator.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Part>().HasMany<Part>(x => x.IncompatibleParts).WithMany();
-            modelBuilder.Entity<Product>().HasMany<Part>(x => x.Parts).WithRequired().WillCascadeOnDelete(true);
+            modelBuilder.Entity<Part>()
+                .HasMany<Part>(x => x.IncompatibleParts)
+                .WithMany()
+                .Map(x =>
+                {
+                    x.MapLeftKey("Part_Id");
+                    x.MapRightKey("Part_Id1");
+                    x.ToTable("PartParts");
+                });
+
+            //modelBuilder.Entity<Product>().HasMany<Part>(x => x.Parts).WithRequired().WillCascadeOnDelete(true);
         }
 
         public DbSet<Order> Orders { get; set; }

@@ -14,7 +14,10 @@ namespace MVCConfigurator
             bundles.Add(new ScriptBundle("~/bundles/js")
                 .Include("~/Scripts/modernizr-{version}.js",new YuiCompressor())
                 .Include("~/Scripts/jquery-{version}.js")
-                .Include("~/Scripts/bootstrap.js"));
+                .Include("~/Scripts/bootstrap.js")
+                .Include("~/Scripts/MvcFoolproofValidation.js")
+                .Include("~/Scripts/MvcFoolproofJQueryValidation.min.js")
+                .Include("~/Scripts/mvcfoolproof.unobtrusive.min.js"));
                 
             
 

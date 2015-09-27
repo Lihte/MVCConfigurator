@@ -11,10 +11,10 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private ConfiguratorContext _context;
-        public UserRepository ()
+        private readonly ConfiguratorContext _context;
+        public UserRepository (ConfiguratorContext context)
 	    {
-            _context = new ConfiguratorContext();
+            _context = context;
 	    }
         public User GetByUsername(string username)
         {

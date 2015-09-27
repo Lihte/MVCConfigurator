@@ -14,7 +14,7 @@ namespace MVCConfigurator.UI.Models
         }
 
         public ProductModel Product { get; set; }
-        public IList<ProductViewModel> Products { get; set; }
+        public IList<ProductModel> Products { get; set; }
         public IList<PartModel> SelectedParts { get; set; }
     }
 }

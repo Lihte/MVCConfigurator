@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MVCConfigurator.DAL
 {
-    internal class ConfiguratorContext : DbContext
+    public class ConfiguratorContext : DbContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

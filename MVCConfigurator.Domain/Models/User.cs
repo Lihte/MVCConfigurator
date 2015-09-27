@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCConfigurator.Domain.Models
 {
-    public class User:IPrincipal
+    public class User : IPrincipal
     {
         public User()
         {

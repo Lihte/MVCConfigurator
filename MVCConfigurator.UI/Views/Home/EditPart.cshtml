@@ -15,9 +15,9 @@
     @Html.HiddenFor(m => m.PartDetails.Id)
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(m => m.PartDetails.Category, "New Category", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Category, "Category", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.PartDetails.Category, new { disabled = "disabled" })
+                @Html.TextBoxFor(m => m.PartDetails.Category, new { @readonly = "readonly" })
                 @Html.ValidationMessageFor(m => m.PartDetails.Category)
             </div>
         </div>
@@ -52,8 +52,8 @@
         <div class="form-group">
             @Html.LabelFor(m => m.PartDetails.Image, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.PartDetails.Image.PartImageUpload, new { type="file" })
-                @Html.ValidationMessageFor(m => m.PartDetails.Image.PartImageUpload)
+                @Html.TextBoxFor(model => model.PartDetails.Image.ImageUpload, new { type="file" })
+                @Html.ValidationMessageFor(m => m.PartDetails.Image.ImageUpload)
             </div>
         </div>
         <br />
@@ -75,22 +75,22 @@
             </tr>
         </thead>
         <tbody>
-            @for(int i = 0; i < Model.ExistingParts.Count(); i++)
+            @for (int i = 0; i < Model.ExistingParts.Count(); i++)
             {
                 <tr>
                     <td>@Html.HiddenFor(m => m.ExistingParts[i].Id)</td>
-                    <td>@Model.ExistingParts[i].Category</td>
-                    <td>@Model.ExistingParts[i].Name</td>
-                    <td>@Model.ExistingParts[i].Price</td>
-                    <td>@Model.ExistingParts[i].LeadTime</td>
-                    <td>@Model.ExistingParts[i].StockKeepingUnit</td>
-                    <td><img src="@Url.Content(Model.ExistingParts[i].Image.PartImagePath)" style="width:100px;height:100px;"/></td>
+                    <td>@Model.ExistingParts[i].Category @Html.HiddenFor(m => m.ExistingParts[i].Category) @Html.HiddenFor(m => m.ExistingParts[i].CategoryId)</td>
+                    <td>@Model.ExistingParts[i].Name @Html.HiddenFor(m => m.ExistingParts[i].Name)</td>
+                    <td>@Model.ExistingParts[i].Price @Html.HiddenFor(m => m.ExistingParts[i].Price)</td>
+                    <td>@Model.ExistingParts[i].LeadTime @Html.HiddenFor(m => m.ExistingParts[i].LeadTime)</td>
+                    <td>@Model.ExistingParts[i].StockKeepingUnit @Html.HiddenFor(m => m.ExistingParts[i].StockKeepingUnit)</td>
+                    <td><img src="@Url.Content(Model.ExistingParts[i].Image.ImagePath)" style="height:100px;" /></td>
                     <td>@Html.CheckBoxFor(m => m.ExistingParts[i].IsIncompatible)</td>
                 </tr>
             }
         </tbody>
     </table>
-    
+
 }
 
 

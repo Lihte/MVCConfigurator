@@ -9,20 +9,21 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m=>m.Product.Id)
+    @Html.HiddenFor(m => m.Product.Id)
     @Html.HiddenFor(m => m.Product.Category)
     @Html.HiddenFor(m => m.Product.Image.ImagePath)
    
-    for(int i = 0; i < Model.Product.Parts.Count; i++)
+    for (int i = 0; i < Model.Product.Parts.Count; i++)
     {
-        if(i == 0)
+        if (i == 0)
         {
-
             <h3>@Model.Product.Parts[i].Category</h3>
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
+                    @Html.HiddenFor(m => m.Product.Parts[i].Id)
+                    @Html.HiddenFor(m => m.Product.Parts[i].CategoryId)
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.ImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>
@@ -35,7 +36,9 @@
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
+                    @Html.HiddenFor(m => m.Product.Parts[i].Id)
+                    @Html.HiddenFor(m => m.Product.Parts[i].CategoryId)
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.ImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>
@@ -50,7 +53,9 @@
             <div class="box">
                 <div class="part" id="@Model.Product.Parts[i].Id" data-id="@Model.Product.Parts[i].Id" data-product-id="@Model.Product.Id" data-iterator="@i" locked="0" onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)">
                     @Html.HiddenFor(m => m.Product.Parts[i].IsSelected)
-                    <img src="@Url.Content(Model.Product.Parts[i].Image.PartImagePath)" style="height:100px" />
+                    @Html.HiddenFor(m => m.Product.Parts[i].Id)
+                    @Html.HiddenFor(m => m.Product.Parts[i].CategoryId)
+                    <img src="@Url.Content(Model.Product.Parts[i].Image.ImagePath)" style="height:100px" />
                     <br />
                     <span class="part-text">@Model.Product.Parts[i].Name</span>
                 </div>
@@ -58,38 +63,12 @@
             </div>
         }
     }
-
+    <br />
     <input type="submit" value="Confirm Selected Parts" />
 }
 
-@*onclick="selectPart(@Model.Product.Id, @Model.Product.Parts[i].Id, @i)"*@
-
 
 <script type="text/javascript">
-    //$(document).ready(function () {
-    //    $(".part").click(function () {
-    //        //if (!$(this).data("disabled"))
-
-    //        var productId = $(this).data("productId");
-    //        var partId = $(this).data("id");
-    //        var iterator = $(this).data("iterator");
-
-    //        var IsSelected = $("#Product_Parts_" + iterator + "__IsSelected").val();
-
-    //        if (IsSelected == "False") {
-    //            $("#Product_Parts_" + iterator + "__IsSelected").val("True");
-    //            console.log($("#Product_Parts_" + iterator + "__IsSelected").val());
-    //        }
-    //        else {
-    //            $("#Product_Parts_" + iterator + "__IsSelected").val("False");
-    //            console.log($("#Product_Parts_" + iterator + "__IsSelected").val());
-    //        }
-
-    //        GetIncompatibleParts(productId, partId);
-
-    //    });
-    //});
-
     function selectPart(productId, partId, e) {
 
         var IsSelected = $("#Product_Parts_" + e + "__IsSelected").val();
@@ -105,7 +84,6 @@
             $('[locked="1"]').each(function () {
                 HideIncompatible(productId, $(this).data("id"));
             });
-            //HideIncompatible(productId, partId);
         }
         else {
             $("#Product_Parts_" + e + "__IsSelected").val("False");
@@ -122,32 +100,12 @@
                 HideIncompatible(productId, $(this).data("id"));
             });
 
-            //ShowIncompatible(productId, partId);
         }
-
-        //ShowAllParts(productId);
-
-        //var IsSelected = $("#Product_Parts_" + e + "__IsSelected").val();
-
-        //if (IsSelected == "False") {
-        //    $("#Product_Parts_" + e + "__IsSelected").val("True");
-        //    console.log($("#Product_Parts_" + e + "__IsSelected").val());
-        //    HideIncompatible(productId, partId);
-        //}
-        //else {
-        //    $("#Product_Parts_" + e + "__IsSelected").val("False");
-        //    console.log($("#Product_Parts_" + e + "__IsSelected").val());
-        //    ShowIncompatible(productId, partId);
-        //}
     };
 
     function ShowAllParts() {
         $('.part').each(function () {
-            //console.log($(this).data("id"));
-            //console.log(productId);
             $(".overlay." + $(this).data("id")).hide();
-
-            //HideIncompatible($(this).data("productId"), $(this).data("id"));
         })
     }
 
@@ -168,25 +126,6 @@
             }
         });
     };
-
-    @*function ShowIncompatible(productId, partId) {
-        $.ajax({
-            type: "GET",
-            url: "@(Url.Action("GetIncompatibleParts", "Home"))",
-            data: { productId: productId, partId: partId },
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function (result) {
-                for (var i in result.ip) {
-                    $(".overlay." + result.ip[i]).hide();
-                }
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
-    };*@
-
 </script>
 
 <style>

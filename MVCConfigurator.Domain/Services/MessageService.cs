@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MVCConfigurator.Domain.Services
 {
@@ -15,7 +10,7 @@ namespace MVCConfigurator.Domain.Services
             SmtpClient client = new SmtpClient();
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential();
-            MailAddress from = new MailAddress("fredrik.boethius@luthman.se");
+            MailAddress from = new MailAddress("admin@mvcconfig.se");
 
             MailAddress to = new MailAddress(mailAddress);
             MailMessage message = new MailMessage(from, to);

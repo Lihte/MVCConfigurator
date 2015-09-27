@@ -10,10 +10,10 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private ConfiguratorContext _context;
-        public ProductRepository()
+        private readonly ConfiguratorContext _context;
+        public ProductRepository(ConfiguratorContext context)
         {
-            _context = new ConfiguratorContext();
+            _context = context;
         }
         
         public Product AddProduct(Product product)

@@ -11,11 +11,11 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private ConfiguratorContext _context;
+        private readonly ConfiguratorContext _context;
 
-        public OrderRepository()
+        public OrderRepository(ConfiguratorContext context)
         {
-            _context = new ConfiguratorContext();
+            _context = context;
         }
 
         public Order GetOrderById(int orderId)

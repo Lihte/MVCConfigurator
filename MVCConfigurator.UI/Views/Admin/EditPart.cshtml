@@ -1,29 +1,23 @@
 ﻿@model MVCConfigurator.UI.Models.PartViewModel
 @{
-    ViewBag.Title = "AddPart";
+    ViewBag.Title = "Edit Part";
 }
-<h2>AddPart</h2>
+<h2>Edit Part</h2>
 
 @Html.ActionLink("Back to product part list", "ProductPartList", new { id = Model.ProductId })
 
 <hr />
 
-@using(Html.BeginForm("AddPart", "Home", FormMethod.Post, new { enctype="multipart/form-data"}))
+@using(Html.BeginForm("EditPart", "Admin", FormMethod.Post, new { enctype="multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.ProductId)
+    @Html.HiddenFor(m => m.PartDetails.Id)
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(m => m.PartDetails.Category, "Existing Category", new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="padding-top:7px">
-                @Html.DropDownListFor(m => m.PartDetails.CategoryId, Model.Categories, "-- Select Category --", new { style = "width:175px; height:26px;" })
-                @Html.ValidationMessageFor(m => m.PartDetails.CategoryId)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.PartDetails.Category, "New Category", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.PartDetails.Category, "Category", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(m => m.PartDetails.Category)
+                @Html.TextBoxFor(m => m.PartDetails.Category, new { @readonly = "readonly" })
                 @Html.ValidationMessageFor(m => m.PartDetails.Category)
             </div>
         </div>
@@ -63,7 +57,7 @@
             </div>
         </div>
         <br />
-        <input type="submit" value="Add Part" class="btn btn-default" />
+        <input type="submit" value="Update Part" class="btn btn-default" />
         
     </div>
     <hr />
@@ -81,7 +75,7 @@
             </tr>
         </thead>
         <tbody>
-            @for(int i = 0; i < Model.ExistingParts.Count(); i++)
+            @for (int i = 0; i < Model.ExistingParts.Count(); i++)
             {
                 <tr>
                     <td>@Html.HiddenFor(m => m.ExistingParts[i].Id)</td>
@@ -96,7 +90,7 @@
             }
         </tbody>
     </table>
-    
+
 }
 
 

@@ -11,8 +11,8 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ConfiguratorContext _context;
-        public UserRepository (ConfiguratorContext context)
+        private readonly ConfiguratorDbContext _context;
+        public UserRepository (ConfiguratorDbContext context)
 	    {
             _context = context;
 	    }

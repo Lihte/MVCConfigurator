@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MVCConfigurator.DAL
 {
-    public class ConfiguratorContext : DbContext
+    public class ConfiguratorDbContext : DbContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -25,8 +25,6 @@ namespace MVCConfigurator.DAL
                     x.MapRightKey("Part_Id1");
                     x.ToTable("PartParts");
                 });
-
-            //modelBuilder.Entity<Product>().HasMany<Part>(x => x.Parts).WithRequired().WillCascadeOnDelete(true);
         }
 
         public DbSet<Order> Orders { get; set; }

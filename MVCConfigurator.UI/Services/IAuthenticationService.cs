@@ -12,7 +12,7 @@ namespace MVCConfigurator.UI.Services
     public interface IAuthenticationService
     {
         void AuthenticateRequest(HttpContextBase context);
-        void LoginUser(User user,HttpContextBase context, bool isPersistent);
+        void LoginUser(User user, HttpContextBase context, bool isPersistent);
         void LogOut();
         void ResetPassword(string username);
     }

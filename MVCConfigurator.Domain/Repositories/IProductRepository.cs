@@ -7,16 +7,9 @@ using MVCConfigurator.Domain.Models;
 
 namespace MVCConfigurator.Domain.Repositories
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Product>
     {
-        Product AddProduct(Product product);
-        Product GetProduct(int id);
-        IList<Product> GetAllProducts();
-        IList<Product> GetProductsByCategory(ProductCategory category);
-        bool UpdateProduct(Product product);
         bool UpdateProduct(Product product, Part part);
-        bool DeleteProduct(Product product);
-
         IEnumerable<ProductCategory> GetAllProductCategories();
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MVCConfigurator.Domain.Models;
 using MVCConfigurator.Domain.Repositories;
 
@@ -16,52 +13,38 @@ namespace MVCConfigurator.Domain.Services
         {
             _repository = repository;
         }
+
         public Product AddProduct(Product product)
         {
-            _repository.AddProduct(product);
+            _repository.Add(product);
             return product;
         }
-
         public Product GetProduct(int id)
         {
-            return _repository.GetProduct(id);
+            return _repository.Get(id);
         }
-
         public IList<Product> GetAllProducts()
         {
-            return _repository.GetAllProducts();
+            return _repository.GetAll().ToList();
         }
-
-        public IList<Product> GetProductsByCategory(ProductCategory category)
+        public void UpdateProduct(Product product)
         {
-            return _repository.GetProductsByCategory(category);
+            _repository.Update(product);
         }
-
-        public bool UpdateProduct(Product product)
-        {
-            return _repository.UpdateProduct(product);
-        }
-
         public bool UpdateProduct(Product product, Part part)
         {
             return _repository.UpdateProduct(product, part);
         }
-
-        public bool DeleteProduct(Product product)
+        public void DeleteProduct(Product product)
         {
-            return _repository.DeleteProduct(product);
+            _repository.Delete(product);
         }
 
-        public IList<Part> DisplayPartsByCategory(Product product, PartCategory category)
-        {
-            return product.Parts.Where(p => p.Category.Id == category.Id).ToList();
-        }
         public IList<ProductCategory> GetAllProductCategories()
         {
 
             return _repository.GetAllProductCategories().ToList();
         }
-
         public IList<PartCategory> GetAllPartCategoriesByProduct(Product product)
         {
             if(product.Parts==null)
@@ -69,24 +52,6 @@ namespace MVCConfigurator.Domain.Services
                 return new List<PartCategory>();
             }
             return product.Parts.Select(p => p.Category).Distinct().ToList();
-        }
-
-        public IList<Part> IsCompatiable(IList<Part> selectedParts, IList<Part> partsToSelect)
-        {
-            var list = new List<Part>();
-
-            foreach(var part in partsToSelect)
-            {
-                for(int i = 0; i < selectedParts.Count; i++)
-                {
-                    if(part.IncompatibleParts.Contains(selectedParts[i]))
-                    {
-                        list.Add(part);
-                    }
-                }
-            }
-
-            return list;
         }
     }
 }

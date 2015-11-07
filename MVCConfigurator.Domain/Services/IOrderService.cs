@@ -10,10 +10,9 @@ namespace MVCConfigurator.Domain.Services
     public interface IOrderService
     {
         IList<Order> GetOrdersByCustomer(int id);
-        Order GetOrderById(int orderId);
-        IList<Order> GetOrderByProduct(Product product);
+        Order GetOrder(int id);
         Order AddOrder(Order order);
-        bool UpdateOrder(Order order);
-        bool DeleteOrder(Order order);
+        void UpdateOrder(Order order);
+        void DeleteOrder(Order order);
     }
 }

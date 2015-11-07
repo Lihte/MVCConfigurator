@@ -1,7 +1,11 @@
 ﻿@{
     var x = (HttpContext.Current.User).IsInRole("");
-    
-    if(x)
+
+    if (!HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else if(x)
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }

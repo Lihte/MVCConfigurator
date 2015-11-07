@@ -10,58 +10,45 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ConfiguratorContext _context;
-        public ProductRepository(ConfiguratorContext context)
+        private readonly ConfiguratorDbContext _context;
+        public ProductRepository(ConfiguratorDbContext context)
         {
             _context = context;
         }
-        
-        public Product AddProduct(Product product)
+
+        public Product Add(Product product)
         {
             _context.Products.Add(product);
             _context.SaveChanges();
             return product;
         }
-
-        public Product GetProduct(int id)
+        public Product Get(int id)
         {
             return _context.Products.FirstOrDefault(x => x.Id == id);
         }
-
-        public IList<Product> GetAllProducts()
+        public IEnumerable<Product> GetAll()
         {
-            return _context.Products.ToList();
+            return _context.Products;
         }
-
-        public IList<Product> GetProductsByCategory(ProductCategory category)
+        public void Delete(Product product)
         {
-            return _context.Products.Where(x => x.Category.Id == category.Id).ToList();
-        }
+            var prod = Get(product.Id);
 
-        public bool DeleteProduct(Product product)
-        {
-            var prod = _context.Products.FirstOrDefault(x => x.Id == product.Id);
-
-            if(prod != null)
+            if (prod != null)
             {
                 _context.Products.Remove(prod);
                 _context.SaveChanges();
-                return true;
             }
-            return false;
         }
-
-        public bool UpdateProduct(Product product)
+        public void Update(Product product)
         {
-            var prod = _context.Products.FirstOrDefault(x => x.Id == product.Id);
+            var prod = Get(product.Id);
 
-            if(prod != null)
+            if (prod != null)
             {
                 prod = product;
                 _context.SaveChanges();
-                return true;
             }
-            return false;
         }
 
         public bool UpdateProduct(Product product, Part part)
@@ -78,7 +65,6 @@ namespace MVCConfigurator.DAL.Repositories
             }
             return false;
         }
-
         public IEnumerable<ProductCategory> GetAllProductCategories()
         {
             return _context.ProductCategories;

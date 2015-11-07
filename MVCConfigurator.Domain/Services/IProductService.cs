@@ -12,13 +12,10 @@ namespace MVCConfigurator.Domain.Services
         Product AddProduct(Product product);
         Product GetProduct(int id);
         IList<Product> GetAllProducts();
-        IList<Product> GetProductsByCategory(ProductCategory category);
-        bool UpdateProduct(Product product);
+        void UpdateProduct(Product product);
         bool UpdateProduct(Product product, Part part);
-        bool DeleteProduct(Product product);
-        IList<Part> DisplayPartsByCategory(Product product, PartCategory category);
+        void DeleteProduct(Product product);
         IList<ProductCategory> GetAllProductCategories();
         IList<PartCategory> GetAllPartCategoriesByProduct(Product product);
-
     }
 }

@@ -17,29 +17,21 @@ namespace MVCConfigurator.Domain.Services
             _repository = repository;
         }
 
-        public Order GetOrderById(int orderId)
-        {
-            return _repository.GetOrderById(orderId);
-        }
-
-        public IList<Order> GetOrderByProduct(Product product)
-        {
-            throw new NotImplementedException();
-        }
-
         public Order AddOrder(Order order)
         {
-            return _repository.AddOrder(order);
+            return _repository.Add(order);
         }
-
-        public bool UpdateOrder(Order order)
+        public Order GetOrder(int id)
         {
-            return _repository.UpdateOrder(order);
+            return _repository.Get(id);
         }
-
-        public bool DeleteOrder(Order order)
+        public void UpdateOrder(Order order)
         {
-            return _repository.DeleteOrder(order);
+            _repository.Update(order);
+        }
+        public void DeleteOrder(Order order)
+        {
+            _repository.Delete(order);
         }
 
         public IList<Order> GetOrdersByCustomer(int id)

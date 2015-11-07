@@ -36,10 +36,10 @@ namespace MVCConfigurator.UI.Services
                 return;
             }
 
-            context.User = GetPricipal(authTicket);
+            context.User = GetPrincipal(authTicket);
         }
 
-        private User GetPricipal(FormsAuthenticationTicket authTicket)
+        private User GetPrincipal(FormsAuthenticationTicket authTicket)
         {
             var userName = authTicket.Name;
             var resourceId = 0;
@@ -101,8 +101,6 @@ namespace MVCConfigurator.UI.Services
 
                 _userService.UpdateUser(user.Entity);
             }
-
-            
         }
     }
 }

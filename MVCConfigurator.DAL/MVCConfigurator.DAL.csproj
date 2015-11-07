@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfiguratorContext.cs" />
+    <Compile Include="ConfiguratorDbContext.cs" />
     <Compile Include="Handlers\PasswordHandler.cs" />
     <Compile Include="Migrations\201509241545543_orderUpdate.cs" />
     <Compile Include="Migrations\201509241545543_orderUpdate.Designer.cs">

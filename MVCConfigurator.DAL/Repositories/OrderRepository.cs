@@ -11,57 +11,51 @@ namespace MVCConfigurator.DAL.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly ConfiguratorContext _context;
+        private readonly ConfiguratorDbContext _context;
 
-        public OrderRepository(ConfiguratorContext context)
+        public OrderRepository(ConfiguratorDbContext context)
         {
             _context = context;
-        }
-
-        public Order GetOrderById(int orderId)
-        {
-            return _context.Orders.FirstOrDefault(x => x.Id == orderId);
-        }
-
-        public IEnumerable<Order> GetOrdersByProduct(Product product)
-        {
-            return _context.Orders.Where(x => x.Product.Id == product.Id);
-        }
-
-        public Order AddOrder(Order order)
-        {
-            _context.Orders.Add(order);
-            _context.SaveChanges();
-            return order;
-        }
-
-        public bool UpdateOrder(Order order)
-        {
-            var exisitingOrder = GetOrderById(order.Id);
-            if(exisitingOrder != null)
-            {
-                exisitingOrder = order;
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        public bool DeleteOrder(Order order)
-        {
-            var exisitingOrder = GetOrderById(order.Id);
-            if(exisitingOrder != null)
-            {
-                _context.Orders.Remove(exisitingOrder);
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
         }
 
         public IEnumerable<Order> GetOrdersByCustomer(int id)
         {
             return _context.Orders.Where(c => c.User.Id == id);
+        }
+
+        public Order Add(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+            return order;
+        }
+        public Order Get(int id)
+        {
+            return _context.Orders.FirstOrDefault(x => x.Id == id);
+        }
+        public IEnumerable<Order> GetAll()
+        {
+            return _context.Orders;
+        }
+        public void Update(Order order)
+        {
+            var orderToUpdate = Get(order.Id);
+
+            if (orderToUpdate != null)
+            {
+                orderToUpdate = order;
+                _context.SaveChanges();
+            }
+        }
+        public void Delete(Order order)
+        {
+            var orderToDelete = Get(order.Id);
+
+            if (orderToDelete != null)
+            {
+                _context.Orders.Remove(orderToDelete);
+                _context.SaveChanges();
+            }
         }
     }
 }

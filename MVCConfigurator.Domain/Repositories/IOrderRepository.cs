@@ -7,13 +7,8 @@ using MVCConfigurator.Domain.Models;
 
 namespace MVCConfigurator.Domain.Repositories
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IRepository<Order>
     {
         IEnumerable<Order> GetOrdersByCustomer(int id);
-        Order GetOrderById(int orderId);
-        IEnumerable<Order> GetOrdersByProduct(Product product);
-        Order AddOrder(Order order);
-        bool UpdateOrder(Order order);
-        bool DeleteOrder(Order order);
     }
 }

@@ -24,45 +24,36 @@ namespace MVCConfigurator.Domain.Services
             var response = new Response<User>();
             var user = _userRepository.GetByUsername(username);
 
-            if(user ==null)
+            if (user == null)
             {
-                response.Error=ErrorCode.InvalidLogin;
+                response.Error = ErrorCode.InvalidLogin;
                 return response;
             }
 
-            if(!_passwordHandler.Validate(password,user.Salt,user.Hash))
+            if (!_passwordHandler.Validate(password, user.Salt, user.Hash))
             {
-                response.Error=ErrorCode.InvalidLogin;
+                response.Error = ErrorCode.InvalidLogin;
                 return response;
             }
 
             response.Entity = user;
-
             return response;
-
-            //var IsCorrect = _passwordHandler.Validate(password, user.Salt, user.Hash);
-
-            //if(IsCorrect)
-            //    _adapter.DoAuth(username);
-
-            //return IsCorrect;
-
         }
 
         public Response<User> RegisterUser(string username, string password, string confirmPassword, UserDetails userDetails)
         {
-            
+
             var response = new Response<User>();
 
-            if(_userRepository.GetByUsername(username)!= null)
+            if (_userRepository.GetByUsername(username) != null)
             {
                 response.Error = ErrorCode.DuplicateEntity;
             }
-            if(password!=confirmPassword || password.Length<6)
+            if (password != confirmPassword || password.Length < 6)
             {
                 response.Error = ErrorCode.InvalidState;
             }
-            if(response.Success)
+            if (response.Success)
             {
                 byte[] salt;
                 byte[] hash;
@@ -84,7 +75,7 @@ namespace MVCConfigurator.Domain.Services
 
         public Response<User> UpdateUser(User user)
         {
-           return new Response<User> { Entity = _userRepository.UpdateUser(user) };
+            return new Response<User> { Entity = _userRepository.UpdateUser(user) };
         }
 
 

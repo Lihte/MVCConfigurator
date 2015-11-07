@@ -12,26 +12,22 @@ namespace MVCConfigurator
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/js")
-                .Include("~/Scripts/modernizr-{version}.js",new YuiCompressor())
+                .Include("~/Scripts/modernizr-{version}.js", new YuiCompressor())
                 .Include("~/Scripts/jquery-{version}.js")
                 .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/MvcFoolproofValidation.js")
                 .Include("~/Scripts/MvcFoolproofJQueryValidation.min.js")
                 .Include("~/Scripts/mvcfoolproof.unobtrusive.min.js"));
-                
-            
 
             bundles.Add(new StyleBundle("~/bundles/styles")
                 .Include("~/Content/bootstrap.css")
                 .Include("~/Content/Site.css")
-                
                 );
-                
         }
     }
+
     public class YuiCompressor : IItemTransform
     {
-
         public string Process(string includedVirtualPath, string input)
         {
             return new JavaScriptCompressor().Compress(input);

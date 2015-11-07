@@ -68,7 +68,7 @@ namespace MVCConfigurator.UI.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<ConfiguratorContext>().ToSelf().InRequestScope();
+            kernel.Bind<ConfiguratorDbContext>().ToSelf().InRequestScope();
             kernel.Bind<IProductRepository>().To<ProductRepository>();
             kernel.Bind<IOrderRepository>().To<OrderRepository>();
             kernel.Bind<IUserRepository>().To<UserRepository>();

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MVCConfigurator.Domain.Models
 {
-    public class ProductCategory:CategoryBase
+    public class ProductCategory : CategoryBase
     {
 
     }

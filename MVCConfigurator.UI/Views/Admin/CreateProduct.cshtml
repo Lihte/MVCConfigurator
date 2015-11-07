@@ -12,7 +12,7 @@
     <input type="submit" value="Upload" />
 </form>*@
 
-@using(Html.BeginForm("CreateProduct", "Home", FormMethod.Post, new { enctype="multipart/form-data"}))
+@using(Html.BeginForm("CreateProduct", "Admin", FormMethod.Post, new { enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">

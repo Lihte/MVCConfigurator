@@ -9,6 +9,5 @@ namespace MVCConfigurator.Domain.Services
     public interface IMessageService
     {
         void SendMail(string subject, string body, string address);
-
     }
 }

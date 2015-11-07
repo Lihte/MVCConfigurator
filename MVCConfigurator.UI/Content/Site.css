@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -16,3 +15,120 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-pills > li.active > a {
+    border-radius: 20px;
+    border: 3px solid black;
+}
+
+.main-navbar {
+    float: right;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+    .main-navbar > ul {
+        float: left;
+    }
+
+        .main-navbar > ul > li {
+            list-style: none;
+            padding: 50px 20px 5px 20px;
+        }
+
+            .main-navbar > ul > li:hover {
+                list-style: none;
+            }
+
+            .main-navbar > ul > li > a {
+                text-decoration: none;
+                color: black;
+            }
+
+            .main-navbar > ul > li:hover > a {
+                color: red;
+            }
+
+.navbar {
+    background-color:#F5F5F5;
+    border-bottom: 1px solid black;
+}
+.header-navbar {
+    
+}
+
+.part:hover {
+    border: 1px solid #C0C0C0;
+}
+
+.part {
+    border: 1px solid transparent;
+    text-align: center;
+    display: inline-block;
+    padding: 5px;
+}
+
+    .part img {
+        display: block;
+    }
+
+.part-text {
+    display: block;
+    font-weight: bold;
+}
+
+.overlay {
+    background: rgba(0,0,0,.50);
+    position: relative;
+    top: -150px;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.box {
+    position: static;
+    height: 150px;
+    display: inline-block;
+}
+
+
+.featured-box {
+        width: 302px;
+        height: 302px;
+        border: 1px solid #d1e3ec;
+        margin-left: auto;
+        margin-right: auto;
+        position:relative;
+    }
+
+    .featured-box-top {
+        width: 100%;
+        height: 75%;
+    }
+    .featured-box-top img{
+        width:300px;
+        height:300px;
+    }
+
+    .featured-box-bottom {
+        width: 100%;
+        height: 25%;
+        background-color:#d1e3ec;
+        z-index:1001;
+        position:absolute;
+        bottom:0;
+    }
+
+    .featured-box:hover .featured-box-bottom {
+        background-color:#b1d0df;
+    }
+
+    .featured-box-bottom p {
+        color:black;
+        margin-top:20px;
+        margin-left:20px;
+        font-size:large;
+        font-weight:bold;
+        text-transform:uppercase;
+    }

@@ -144,23 +144,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\mvcfoolproof.unobtrusive.min.js" />
     <Content Include="Scripts\MvcFoolproofJQueryValidation.min.js" />
     <Content Include="Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Scripts\PartSelectionScript.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Models\CustomerDetailsViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\CustomerListViewModel.cs" />
     <Compile Include="Models\CustomizeProductViewModel.cs" />
+    <Compile Include="Models\FeaturedProductViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\PartViewModel.cs" />
     <Compile Include="Models\ProductListViewModel.cs" />
@@ -186,30 +187,30 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\CreateUser.cshtml" />
-    <Content Include="Views\Home\User.cshtml" />
-    <Content Include="Views\Home\UserCreated.cshtml" />
-    <Content Include="Views\Home\Admin.cshtml" />
-    <Content Include="Views\Home\ResetPassword.cshtml" />
-    <Content Include="Views\Home\CreateNewPassword.cshtml" />
+    <Content Include="Views\Home\LogIn\CreateUser.cshtml" />
+    <Content Include="Views\Home\LogIn\User.cshtml" />
+    <Content Include="Views\Home\LogIn\ResetPassword.cshtml" />
+    <Content Include="Views\Home\LogIn\CreateNewPassword.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\CustomerList.cshtml" />
-    <Content Include="Views\User\ProductList.cshtml" />
-    <Content Include="Views\Admin\AdminProductList.cshtml" />
+    <Content Include="Views\Home\ProductList.cshtml" />
+    <Content Include="Views\Admin\ProductList.cshtml" />
     <Content Include="Views\Admin\CreateProduct.cshtml" />
     <Content Include="Views\Admin\ProductDetails.cshtml" />
     <Content Include="Views\Admin\CustomerDetails.cshtml" />
-    <Content Include="Views\User\SelectParts.cshtml" />
-    <Content Include="Views\User\Customer.cshtml" />
-    <Content Include="Views\Home\ProductPartList.cshtml" />
-    <Content Include="Views\Home\AddPart.cshtml" />
-    <Content Include="Views\User\OrderList.cshtml" />
+    <Content Include="Views\Home\SelectParts.cshtml" />
+    <Content Include="Views\Home\Customer.cshtml" />
+    <Content Include="Views\Admin\ProductPartList.cshtml" />
+    <Content Include="Views\Admin\AddPart.cshtml" />
+    <Content Include="Views\Home\OrderList.cshtml" />
     <Content Include="Views\Shared\_CustomerLayout.cshtml" />
-    <Content Include="Views\User\CustomizeProduct.cshtml" />
+    <Content Include="Views\Home\CustomizeProduct.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\EditorTemplates\ProductModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Image.cshtml" />
-    <Content Include="Views\Home\EditPart.cshtml" />
+    <Content Include="Views\Admin\EditPart.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\LogIn\LogIn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -219,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCConfigurator.DAL\MVCConfigurator.DAL.csproj">

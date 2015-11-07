@@ -5,14 +5,14 @@ namespace MVCConfigurator.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MVCConfigurator.DAL.ConfiguratorContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<MVCConfigurator.DAL.ConfiguratorDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(MVCConfigurator.DAL.ConfiguratorContext context)
+        protected override void Seed(MVCConfigurator.DAL.ConfiguratorDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

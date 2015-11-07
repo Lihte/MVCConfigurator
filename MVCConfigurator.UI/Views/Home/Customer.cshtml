@@ -1,0 +1,26 @@
+﻿@model MVCConfigurator.UI.Models.FeaturedProductViewModel
+
+@{
+    ViewBag.Title = "Featured Products";
+}
+
+<h1 style="text-align:center;">- Featured Products -</h1>
+<hr />
+<br />
+<div class="row">
+    @for (int i = 0; i < Model.FeaturedProducts.Count(); i++)
+    {
+        <div class="col-md-4">
+            <a href="@Url.Action("CustomizeProduct", "Home")">
+                <div class="featured-box">
+                    <div class="featured-box-top">
+                        <img src="@Url.Content(Model.FeaturedProducts[i].Image.ImagePath)" />
+                    </div>
+                    <div class="featured-box-bottom">
+                        <p>@Model.FeaturedProducts[i].Category</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
